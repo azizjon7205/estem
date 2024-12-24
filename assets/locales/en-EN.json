@@ -1,0 +1,41 @@
+{
+  "base": {
+    "name": "Nomi",
+    "status": "Status",
+    "search_hint": "Qidiruv...",
+    "actions": {
+      "label": "Amallar",
+      "confirm": "Tasdiqlash",
+      "delete": "O'chirish",
+      "upload": "Yuklash",
+      "continue": "Davom etish",
+      "cancel": "Bekor qilish",
+      "back": "Ortga",
+      "sort": "Saralash",
+      "edit": "Tahrirlash",
+      "add": "Qo'shish",
+      "setup": "Sozlash",
+      "save": "Saqlash"
+    }
+  },
+  "language": {
+    "title": "Тилни танланг",
+    "description": "Tilni tanlagandan so’ng, tilni o’zgartirish uchun ilovadan profile bo’limidan o’rgartirishingiz mumkin",
+    "uzbek": "O'zbek tili",
+    "cyrillic": "Ўзбек тили",
+    "russian": "Русский язык",
+    "uz_label": "(O'zb)",
+    "cyril_label": "(Ўзб)",
+    "ru_label": "(Рус)"
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next"
+  },
+  "auth": {
+    "sign_in": "Sign in",
+    "verification": "Verification",
+    "verification_message": "We’ve send you the verification code on {}",
+    "resend": "Re-send code in"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "base": {
+    "actions": {
+      "confirm": "Tasdiqlash"
+    }
+  },
+  "language": {
+    "title": "Выберите язык",
+    "description": "Tilni tanlagandan so’ng, tilni o’zgartirish uchun ilovadan profile bo’limidan o’rgartirishingiz mumkin",
+    "uzbek": "O'zbek tili",
+    "cyrillic": "Ўзбек тили",
+    "russian": "Русский язык"
+  },
+  "login": {
+    "title": "Akkauntga kirish",
+    "subtitle": "Kirish detallarini kiriting",
+    "action_title": "Login",
+    "login_label": "Login",
+    "password_label": "Parol"
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next"
+  }
+}

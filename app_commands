@@ -1,0 +1,7 @@
+## To generate app splash
+-- dart run flutter_native_splash:create --path=/Users/azizjonsheronov/Projects/Flutter/estem/flutter_native_splash.yaml
+
+## To generate app router
+-- dart run build_runner build
+
+
