@@ -1,23 +1,21 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/shared/widgets/app_resizable_text_field.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
 import '../models/questions/question_short_answer.dart';
-import 'app_text_field.dart';
+import 'app_resizable_text_field.dart';
 import 'item_required.dart';
 import 'sizes.dart';
 
 class LongAnswerItemCard extends StatelessWidget {
-  const LongAnswerItemCard(
-      {super.key,
-        required this.question,
-        required this.onAnswerChanged,
-        this.total = 0,
-        this.current = 0,
-      });
+  const LongAnswerItemCard({
+    super.key,
+    required this.question,
+    required this.onAnswerChanged,
+    this.total = 0,
+    this.current = 0,
+  });
 
   final ShortAnswerQuestion question;
   final int total;
@@ -47,7 +45,8 @@ class LongAnswerItemCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'question.label'.tr(args: [current.toString(), total.toString()]),
+                  'question.label'
+                      .tr(args: [current.toString(), total.toString()]),
                   style: GoogleFonts.inter(
                     color: AppColors.primary,
                     fontSize: 12.0,
@@ -63,10 +62,11 @@ class LongAnswerItemCard extends StatelessWidget {
           Text(
             question.question,
             style: GoogleFonts.inter(
-                color: AppColors.textStrong,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                height: 19.36 / 16),
+              color: AppColors.textStrong,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              height: 19.36 / 16,
+            ),
           ),
           if (question.image != null) ...[
             const Height(6.0),

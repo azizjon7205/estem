@@ -6,7 +6,6 @@ import 'package:pinput/pinput.dart';
 import '/core/styles/app_colors.dart';
 import '../bloc/verification_bloc.dart';
 import '../bloc/verification_event.dart';
-import '../bloc/verification_state.dart';
 
 class OtpField extends StatelessWidget {
   const OtpField({super.key});

@@ -99,7 +99,7 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
   _onVerifySmsCode(VerifySmsCode event, Emitter<VerificationState> emit) async {
     emit(state.copyWith(isLoading: true, isSuccess: null, errorMessage: ''));
     try {
-      final result = await _useCase.call(state.phone, event.code);
+      await _useCase.call(state.phone, event.code);
       emit(state.copyWith(isLoading: false, isSuccess: true));
     } catch (e) {
 

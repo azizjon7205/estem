@@ -13,7 +13,6 @@ class Helper {
   static AppLang getLang() {
     AppLang? lang;
     lang = sl<AppSharedPrefs>().getLang();
-    lang = lang ?? AppLang.russian;
     return lang;
   }
 
@@ -71,6 +70,4 @@ class Helper {
     String formattedDate = DateFormat('dd MMMM, yyyy').format(date);
     return formattedDate;
   }
-
-
 }

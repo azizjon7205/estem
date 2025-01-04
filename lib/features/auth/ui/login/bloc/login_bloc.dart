@@ -24,8 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       SubmitPhoneNumberEvent event, Emitter<LoginState> emit) async {
     emit(state.copyWith(isLoading: true));
     try {
-      final result =
-          await _loginUseCase.call(phoneNumberEditingController.text);
+      await _loginUseCase.call(phoneNumberEditingController.text);
       emit(state.copyWith(isLoading: false, isSuccess: true));
     } catch (e) {
       emit(state.copyWith(

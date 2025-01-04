@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'app.dart';
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsFlutterBinding.ensureInitialized();
+
   debugPrint('App Initialized');
 
   await EasyLocalization.ensureInitialized();
@@ -25,8 +25,9 @@ void main() async {
       startLocale: AppLang.english.locale,
       path: 'assets/locales',
       child: DevicePreview(
-          enabled: !kReleaseMode && false,
-          builder: (context) => const EstemApp()),
+        enabled: !kReleaseMode && false,
+        builder: (context) => const EstemApp(),
+      ),
     ),
   );
 }

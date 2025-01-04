@@ -1,14 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/shared/models/questions/question_rating.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '../models/questions/question_short_answer.dart';
-import 'app_text_field.dart';
+import '../models/questions/question_rating.dart';
 import 'item_required.dart';
 import 'sizes.dart';
 
@@ -33,8 +29,8 @@ class SmileItemCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(
-          horizontal: 14.0,
-          vertical: 16.0,
+        horizontal: 14.0,
+        vertical: 16.0,
       ),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(18.0),
@@ -123,13 +119,18 @@ class SmileItemCard extends StatelessWidget {
 }
 
 _getColor(double rating) {
-  switch(rating) {
-    case 1.0: return AppColors.red;
-    case 2.0: return AppColors.orange;
-    case 3.0: return const Color(0xFF888693);
-    case 4.0: return AppColors.blue;
-    case 5.0: return AppColors.green;
-    default : return Colors.transparent;
+  switch (rating) {
+    case 1.0:
+      return AppColors.red;
+    case 2.0:
+      return AppColors.orange;
+    case 3.0:
+      return const Color(0xFF888693);
+    case 4.0:
+      return AppColors.blue;
+    case 5.0:
+      return AppColors.green;
+    default:
+      return Colors.transparent;
   }
 }
-

@@ -1,13 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/shared/models/questions/question_rating.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '../models/questions/question_short_answer.dart';
-import 'app_text_field.dart';
+import '../models/questions/question_rating.dart';
 import 'item_required.dart';
 import 'sizes.dart';
 
@@ -117,10 +114,11 @@ class StarRatingItemCard extends StatelessWidget {
           Text(
             rating != null ? question.ratingLabels[rating!] ?? '' : '',
             style: GoogleFonts.inter(
-                color: _getColor(rating ?? 0.0),
-                fontSize: 12,
-                height: 14.52 / 12,
-                fontWeight: FontWeight.w500),
+              color: _getColor(rating ?? 0.0),
+              fontSize: 12,
+              height: 14.52 / 12,
+              fontWeight: FontWeight.w500,
+            ),
           )
         ],
       ),
@@ -129,12 +127,18 @@ class StarRatingItemCard extends StatelessWidget {
 }
 
 _getColor(double rating) {
-  switch(rating) {
-    case 1.0: return AppColors.red;
-    case 2.0: return AppColors.orange;
-    case 3.0: return const Color(0xFF888693);
-    case 4.0: return AppColors.blue;
-    case 5.0: return AppColors.green;
-    default : return Colors.transparent;
+  switch (rating) {
+    case 1.0:
+      return AppColors.red;
+    case 2.0:
+      return AppColors.orange;
+    case 3.0:
+      return const Color(0xFF888693);
+    case 4.0:
+      return AppColors.blue;
+    case 5.0:
+      return AppColors.green;
+    default:
+      return Colors.transparent;
   }
 }
