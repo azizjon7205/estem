@@ -2,6 +2,7 @@
   "base": {
     "name": "Nomi",
     "status": "Status",
+    "other": "Other",
     "search_hint": "Qidiruv...",
     "actions": {
       "label": "Amallar",
@@ -36,6 +37,31 @@
     "sign_in": "Sign in",
     "verification": "Verification",
     "verification_message": "We’ve send you the verification code on {}",
-    "resend": "Re-send code in"
+    "resend_in": "Re-send code in",
+    "resend": "Resend code"
+  },
+  "main": {
+    "home": "Home",
+    "forms": "Forms",
+    "wallet": "Wallet",
+    "profile": "Profile",
+    "my_profile": "My Profile",
+    "statistics": "Statistics",
+    "bookmark": "Bookmark",
+    "contact_us":"Contact Us",
+    "settings": "Settings",
+    "help_faqs": "Help & FAQs",
+    "privacy_policy": "Privacy Policy",
+    "sign_out": "Sign Out",
+    "invite_friends": "Invite Friends"
+  },
+  "home": {
+    "recent": "Recent",
+    "see_all": "See All"
+  },
+  "question": {
+    "label": "QUESTION {} OF {}",
+    "required": "Required",
+    "answer": "Answer"
   }
 }

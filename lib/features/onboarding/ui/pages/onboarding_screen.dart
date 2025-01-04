@@ -1,12 +1,17 @@
 import 'package:auto_route/annotations.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:estem/core/router/router.dart';
+import 'package:estem/core/router/router.gr.dart';
 import 'package:estem/core/styles/app_colors.dart';
 import 'package:estem/features/onboarding/domain/entities/onboarding.dart';
+import 'package:estem/shared/data/data_sources/local/app_shared_prefs.dart';
 import 'package:estem/shared/widgets/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../../../core/utils/injections.dart';
 
 @RoutePage()
 class OnboardingScreen extends StatefulWidget {
@@ -21,8 +26,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   PageController controller = PageController();
   int currentIndex = 0;
 
+  late final AppSharedPrefs prefs;
+
   @override
   void initState() {
+    prefs = sl();
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, // Transparent status bar
+        systemNavigationBarColor: AppColors.primary,
+        statusBarIconBrightness: Brightness.dark, // Black icons
+        statusBarBrightness: Brightness.light, // For iOS compatibility
+      ),
+    );
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+      overlays: [SystemUiOverlay.top], // Keep only the status bar visible
+    );
     onboarding = dummyOnboarding().first;
     super.initState();
   }
@@ -36,24 +56,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void dispose() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    print("ON dispose");
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //     statusBarColor: Colors.white, // Transparent status bar
+    //     systemNavigationBarColor: Colors.white,
+    //     statusBarIconBrightness: Brightness.dark, // Black icons
+    //     statusBarBrightness: Brightness.light, // For iOS compatibility
+    //   ),
+    // );
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+    );
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent, // Transparent status bar
-        systemNavigationBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark, // Black icons
-        statusBarBrightness: Brightness.light, // For iOS compatibility
-      ),
-    );
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.immersiveSticky,
-      overlays: [SystemUiOverlay.top], // Keep only the status bar visible
-    );
+
     return Scaffold(
       body: PageView.builder(
         controller: controller,
@@ -116,7 +136,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-
+                    prefs.setOnboarding(true);
+                    navController.push(const LoginRoute());
                   },
                   child: Text(
                     'onboarding.skip'.tr(),
@@ -146,6 +167,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                       // controller.animateToPage(currentIndex+1, duration: Duration(), curve: ElasticInOutCurve());
                       // onPositionChanged(currentIndex+1);
+                    } else {
+                      prefs.setOnboarding(true);
+                      navController.push(const LoginRoute());
                     }
                   },
                   child: Text(

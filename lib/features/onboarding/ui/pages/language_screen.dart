@@ -1,26 +1,66 @@
 import 'package:auto_route/annotations.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/core/router/router.dart';
-import 'package:estem/core/router/router.gr.dart';
-import 'package:estem/shared/models/language.dart';
-import 'package:estem/shared/widgets/app_elevated_button.dart';
-import 'package:estem/shared/widgets/item_language_selector.dart';
-import 'package:estem/shared/widgets/sizes.dart';
+import 'package:estem/shared/data/data_sources/local/app_shared_prefs.dart';
+import 'package:estem/shared/models/app_lang.dart';
+import '../../../../core/utils/injections.dart';
+import '/core/router/router.dart';
+import '/core/router/router.gr.dart';
+import '/shared/models/language.dart';
+import '/shared/widgets/app_elevated_button.dart';
+import '/shared/widgets/item_language_selector.dart';
+import '/shared/widgets/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 @RoutePage()
-class LanguageScreen extends StatelessWidget {
+class LanguageScreen extends StatefulWidget {
   const LanguageScreen({super.key});
 
   @override
+  State<LanguageScreen> createState() => _LanguageScreenState();
+}
+
+class _LanguageScreenState extends State<LanguageScreen> {
+
+  final AppSharedPrefs prefs = sl();
+  late AppLang currentLanguage;
+
+  @override
+  void initState() {
+    currentLanguage = prefs.getLang();
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, // Transparent status bar
+        systemNavigationBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark, // Black icons
+        statusBarBrightness: Brightness.light, // For iOS compatibility
+      ),
+    );
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+      overlays: [SystemUiOverlay.top], // Keep only the status bar visible
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //     statusBarColor: Colors.white, // Transparent status bar
+    //     systemNavigationBarColor: Colors.white,
+    //     statusBarIconBrightness: Brightness.dark, // Black icons
+    //     statusBarBrightness: Brightness.light, // For iOS compatibility
+    //   ),
+    // );
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+    );
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -52,8 +92,12 @@ class LanguageScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       child: ItemLanguageSelector(
                         language: dataLanguages()[i],
-                        isSelected: i % 2 != 0,
-                        onSelect: (value) {},
+                        isSelected: currentLanguage == dataLanguages()[i].lang,
+                        onSelect: (value) {
+                          setState(() {
+                            currentLanguage = value.lang;
+                          });
+                        },
                       ),
                     ),
                     separatorBuilder: (context, i) => const Height(16.0),
@@ -64,6 +108,8 @@ class LanguageScreen extends StatelessWidget {
             ),
             AppElevatedButton(
               onTap: () {
+                context.setLocale(currentLanguage.locale);
+                prefs.setLang(currentLanguage);
                 navController.push(const OnboardingRoute());
               },
               label: 'base.actions.continue'.tr().toUpperCase(),

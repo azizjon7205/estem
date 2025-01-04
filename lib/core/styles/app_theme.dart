@@ -102,7 +102,7 @@ CheckboxThemeData _checkboxThemeData() => CheckboxThemeData(
         }
         return BorderSide(
           width: 2,
-          color: AppColors.primary,
+          color: Colors.transparent,
         );
       },
     ),
@@ -128,7 +128,26 @@ CheckboxThemeData _checkboxThemeData() => CheckboxThemeData(
     }
     return AppColors.gray;
   }),
-  checkColor: WidgetStatePropertyAll(AppColors.white),
+  checkColor: WidgetStateProperty.resolveWith((states) {
+    if (states.contains(WidgetState.disabled)) {
+      return AppColors.white;
+    } else if (states.contains(WidgetState.dragged)) {
+      return AppColors.white;
+    } else if (states.contains(WidgetState.error)) {
+      return AppColors.white;
+    } else if (states.contains(WidgetState.focused)) {
+      return AppColors.white;
+    } else if (states.contains(WidgetState.hovered)) {
+      return AppColors.white;
+    } else if (states.contains(WidgetState.pressed)) {
+      return AppColors.white;
+    } else if (states.contains(WidgetState.scrolledUnder)) {
+      return AppColors.white;
+    } else if (states.contains(WidgetState.selected)) {
+      return AppColors.white;
+    }
+    return AppColors.white;
+  }),
   side: WidgetStateBorderSide.resolveWith(
         (states) {
       if (states.contains(WidgetState.selected)) {
@@ -139,9 +158,10 @@ CheckboxThemeData _checkboxThemeData() => CheckboxThemeData(
       }
       return BorderSide(
         width: 2,
-        color: AppColors.primary,
+        color: Colors.transparent,
       );
     },
   ),
+  visualDensity: VisualDensity.compact
 );
 
