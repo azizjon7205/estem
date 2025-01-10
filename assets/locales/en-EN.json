@@ -62,6 +62,9 @@
   "question": {
     "label": "QUESTION {} OF {}",
     "required": "Required",
-    "answer": "Answer"
+    "answer": "Answer",
+    "choose_from_calendar": "Choose from calendar",
+    "upload_file": "Upload your file here",
+    "browse_file": "Browse file"
   }
 }

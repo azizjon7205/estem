@@ -1,27 +1,30 @@
 import 'package:easy_localization/easy_localization.dart';
-
+import 'package:estem/shared/models/questions/question_option.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '../models/questions/question_short_answer.dart';
-import 'app_text_field.dart';
+import '../app_text_field.dart';
 import 'item_required.dart';
-import 'sizes.dart';
+import '../sizes.dart';
 
-class EmailItemCard extends StatelessWidget {
-  const EmailItemCard({
+class MultipleSelectItemCard extends StatelessWidget {
+  const MultipleSelectItemCard({
     super.key,
     required this.question,
     required this.onAnswerChanged,
+    required this.onOptionSelected,
+    this.options,
     this.total = 0,
     this.current = 0,
   });
 
-  final ShortAnswerQuestion question;
+  final OptionQuestion question;
   final int total;
   final int current;
+  final List<Option>? options;
   final Function(String) onAnswerChanged;
+  final Function(Option) onOptionSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -80,11 +83,47 @@ class EmailItemCard extends StatelessWidget {
               ),
             )
           ],
-          const Height(16.0),
-          AppTextField(
-            onChanged: onAnswerChanged,
-            hint: "question.answer".tr(),
-          )
+          const Height(12.0),
+          ...question.options.map(
+            (item) => GestureDetector(
+              onTap: () {
+                onOptionSelected(item);
+              },
+              behavior: HitTestBehavior.translucent,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.check_circle,
+                      size: 20,
+                      color: options?.any((element) => element.id == item.id) ==
+                              true
+                          ? AppColors.primary
+                          : AppColors.gray,
+                    ),
+                    const Width(8.0),
+                    Text(
+                      item.option,
+                      style: GoogleFonts.inter(
+                          fontSize: 14,
+                          height: 16.94 / 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          if(question.hasOther)
+            ...[
+              const Height(12.0),
+              AppTextField(
+                onChanged: onAnswerChanged,
+                hint: "base.other".tr(),
+              )
+            ]
         ],
       ),
     );

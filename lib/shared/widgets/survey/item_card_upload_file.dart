@@ -1,30 +1,27 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/shared/models/questions/question_option.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import 'app_text_field.dart';
+import '../../models/questions/question_upload_file.dart';
 import 'item_required.dart';
-import 'sizes.dart';
+import '../sizes.dart';
 
-class MultipleSelectItemCard extends StatelessWidget {
-  const MultipleSelectItemCard({
+class UploadFileItemCard extends StatelessWidget {
+  const UploadFileItemCard({
     super.key,
     required this.question,
-    required this.onAnswerChanged,
-    required this.onOptionSelected,
-    this.options,
+    required this.onBrowseFileTap,
     this.total = 0,
     this.current = 0,
   });
 
-  final OptionQuestion question;
+  final UploadFileQuestion question;
   final int total;
   final int current;
-  final List<Option>? options;
-  final Function(String) onAnswerChanged;
-  final Function(Option) onOptionSelected;
+  final VoidCallback onBrowseFileTap;
 
   @override
   Widget build(BuildContext context) {
@@ -83,47 +80,61 @@ class MultipleSelectItemCard extends StatelessWidget {
               ),
             )
           ],
-          const Height(12.0),
-          ...question.options.map(
-            (item) => GestureDetector(
-              onTap: () {
-                onOptionSelected(item);
-              },
-              behavior: HitTestBehavior.translucent,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Row(
+          const Height(16.0),
+          GestureDetector(
+            onTap: onBrowseFileTap,
+            child: DottedBorder(
+              borderType: BorderType.RRect,
+              radius: const Radius.circular(12.0),
+              dashPattern: const [7.5, 4],
+              color: AppColors.primary,
+              padding: const EdgeInsets.symmetric(vertical: 14.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  spacing: 16.0,
                   children: [
-                    Icon(
-                      Icons.check_circle,
-                      size: 20,
-                      color: options?.any((element) => element.id == item.id) ==
-                              true
-                          ? AppColors.primary
-                          : AppColors.gray,
+                    SizedBox(
+                      height: 36,
+                      width: 36,
+                      child: SvgPicture.asset('assets/icons/ic_folder.svg'),
                     ),
-                    const Width(8.0),
                     Text(
-                      item.option,
+                      'question.upload_file'.tr(),
                       style: GoogleFonts.inter(
+                        color: const Color(0xFF888693),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        height: 23 / 14,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: onBrowseFileTap,
+                      clipBehavior: Clip.hardEdge,
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(0, 0),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 6.0, horizontal: 12.0),
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                      ),
+                      child: Text(
+                        'question.browse_file'.tr(),
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
                           fontSize: 14,
-                          height: 16.94 / 14,
                           fontWeight: FontWeight.w400,
-                          color: Colors.black),
+                          height: 23 / 14,
+                        ),
+                      ),
                     )
                   ],
                 ),
               ),
             ),
-          ),
-          if(question.hasOther)
-            ...[
-              const Height(12.0),
-              AppTextField(
-                onChanged: onAnswerChanged,
-                hint: "base.other".tr(),
-              )
-            ]
+          )
         ],
       ),
     );

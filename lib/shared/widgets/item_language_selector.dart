@@ -1,9 +1,11 @@
-import 'package:estem/core/styles/app_colors.dart';
-import 'package:estem/shared/models/language.dart';
-import 'package:estem/shared/widgets/app_container.dart';
 import 'package:estem/shared/widgets/sizes.dart';
+
+import '../models/language.dart';
+import '/core/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'app_container.dart';
 
 class ItemLanguageSelector extends StatelessWidget {
   const ItemLanguageSelector({super.key, required this.language, required this.isSelected, required this.onSelect});

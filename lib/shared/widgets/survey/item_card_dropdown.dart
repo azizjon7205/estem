@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '../models/questions/question_option.dart';
+import '../../models/questions/question_option.dart';
 import 'item_required.dart';
-import 'sizes.dart';
+import '../sizes.dart';
 
 class DropdownItemCard extends StatefulWidget {
   const DropdownItemCard({
@@ -162,7 +162,7 @@ class _DropdownItemCardState extends State<DropdownItemCard> {
                         height: 23 / 14,
                         fontWeight: FontWeight.w400),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.keyboard_arrow_down,
                     size: 24,
                     color: Color(0xFF888693),

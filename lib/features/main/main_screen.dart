@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '/core/router/router.gr.dart';
 import '/core/styles/app_colors.dart';
-import 'main/ui/widgets/drawer_layout.dart';
+import 'home/ui/widgets/drawer_layout.dart';
 
 @RoutePage()
 class MainScreen extends StatefulWidget {

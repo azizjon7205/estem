@@ -23,77 +23,147 @@ ThemeData getAppTheme(BuildContext context) {
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
-      contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+      contentPadding:
+          const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
       isDense: true,
       hintStyle: const TextStyle(
-          fontSize: 14.0,
-          height: 24 / 14,
-          color: Color(0xFF747688),
+        fontSize: 14.0,
+        height: 24 / 14,
+        color: Color(0xFF747688),
       ),
       border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: AppColors.gray),
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.gray),
       ),
       enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.gray),
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(color: AppColors.gray),
       ),
       focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.primary),
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(color: AppColors.primary),
       ),
       errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.red),
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(color: AppColors.red),
       ),
       focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.red),
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(color: AppColors.red),
       ),
       disabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide.none
-      ),
-
+          borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
     ),
     checkboxTheme: _checkboxThemeData(),
     tabBarTheme: TabBarTheme(
       unselectedLabelStyle: TextStyle(
-        color: Color(0xFF888693),
-        fontSize: 15.0,
-        fontWeight: FontWeight.w400,
-        height: 25.0 / 15.0
-      ),
+          color: Color(0xFF888693),
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+          height: 25.0 / 15.0),
       labelStyle: TextStyle(
-        color: Color(0xFF888693),
-        fontSize: 15.0,
-        fontWeight: FontWeight.w400,
-        height: 25.0 / 15.0
-      ),
-
+          color: Color(0xFF888693),
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+          height: 25.0 / 15.0),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        side: BorderSide(color: AppColors.gray),
-        padding: const EdgeInsets.all(10),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
-      )
-    ),
-    radioTheme: RadioThemeData(
-      fillColor: WidgetStateProperty.resolveWith((states) {
+        style: OutlinedButton.styleFrom(
+            side: BorderSide(color: AppColors.gray),
+            padding: const EdgeInsets.all(10),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10)))),
+    radioTheme:
+        RadioThemeData(fillColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return AppColors.primary;
+      }
+      return AppColors.gray;
+    })),
+    datePickerTheme: DatePickerThemeData(
+      dayBackgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return AppColors.primary;
         }
-        return AppColors.gray;
-      })
-    )
+        return Colors.transparent;
+      }),
+      todayBackgroundColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppColors.primary;
+        }
+        return Colors.transparent;
+      }),
+      todayBorder: const BorderSide(color: AppColors.gray, width: 1),
+      dayShape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      dayStyle: TextStyle(),
+      yearStyle: TextStyle(),
+      headerHeadlineStyle: TextStyle(),
+    ),
   );
 }
 
 CheckboxThemeData _checkboxThemeData() => CheckboxThemeData(
-  shape: CircleBorder(
+    shape: CircleBorder(
+      side: WidgetStateBorderSide.resolveWith(
+        (states) {
+          if (states.contains(WidgetState.selected)) {
+            return const BorderSide(
+              width: 2,
+              color: Colors.transparent,
+            );
+          }
+          return BorderSide(
+            width: 2,
+            color: Colors.transparent,
+          );
+        },
+      ),
+    ),
+    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    fillColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return AppColors.primary;
+      } else if (states.contains(WidgetState.dragged)) {
+        return AppColors.primary;
+      } else if (states.contains(WidgetState.error)) {
+        return AppColors.primary;
+      } else if (states.contains(WidgetState.focused)) {
+        return AppColors.primary;
+      } else if (states.contains(WidgetState.hovered)) {
+        return AppColors.primary;
+      } else if (states.contains(WidgetState.pressed)) {
+        return AppColors.primary;
+      } else if (states.contains(WidgetState.scrolledUnder)) {
+        return AppColors.primary;
+      } else if (states.contains(WidgetState.selected)) {
+        return AppColors.primary;
+      }
+      return AppColors.gray;
+    }),
+    checkColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return AppColors.white;
+      } else if (states.contains(WidgetState.dragged)) {
+        return AppColors.white;
+      } else if (states.contains(WidgetState.error)) {
+        return AppColors.white;
+      } else if (states.contains(WidgetState.focused)) {
+        return AppColors.white;
+      } else if (states.contains(WidgetState.hovered)) {
+        return AppColors.white;
+      } else if (states.contains(WidgetState.pressed)) {
+        return AppColors.white;
+      } else if (states.contains(WidgetState.scrolledUnder)) {
+        return AppColors.white;
+      } else if (states.contains(WidgetState.selected)) {
+        return AppColors.white;
+      }
+      return AppColors.white;
+    }),
     side: WidgetStateBorderSide.resolveWith(
-          (states) {
+      (states) {
         if (states.contains(WidgetState.selected)) {
           return const BorderSide(
             width: 2,
@@ -106,62 +176,4 @@ CheckboxThemeData _checkboxThemeData() => CheckboxThemeData(
         );
       },
     ),
-  ),
-  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-  fillColor: WidgetStateProperty.resolveWith((states) {
-    if (states.contains(WidgetState.disabled)) {
-      return AppColors.primary;
-    } else if (states.contains(WidgetState.dragged)) {
-      return AppColors.primary;
-    } else if (states.contains(WidgetState.error)) {
-      return AppColors.primary;
-    } else if (states.contains(WidgetState.focused)) {
-      return AppColors.primary;
-    } else if (states.contains(WidgetState.hovered)) {
-      return AppColors.primary;
-    } else if (states.contains(WidgetState.pressed)) {
-      return AppColors.primary;
-    } else if (states.contains(WidgetState.scrolledUnder)) {
-      return AppColors.primary;
-    } else if (states.contains(WidgetState.selected)) {
-      return AppColors.primary;
-    }
-    return AppColors.gray;
-  }),
-  checkColor: WidgetStateProperty.resolveWith((states) {
-    if (states.contains(WidgetState.disabled)) {
-      return AppColors.white;
-    } else if (states.contains(WidgetState.dragged)) {
-      return AppColors.white;
-    } else if (states.contains(WidgetState.error)) {
-      return AppColors.white;
-    } else if (states.contains(WidgetState.focused)) {
-      return AppColors.white;
-    } else if (states.contains(WidgetState.hovered)) {
-      return AppColors.white;
-    } else if (states.contains(WidgetState.pressed)) {
-      return AppColors.white;
-    } else if (states.contains(WidgetState.scrolledUnder)) {
-      return AppColors.white;
-    } else if (states.contains(WidgetState.selected)) {
-      return AppColors.white;
-    }
-    return AppColors.white;
-  }),
-  side: WidgetStateBorderSide.resolveWith(
-        (states) {
-      if (states.contains(WidgetState.selected)) {
-        return const BorderSide(
-          width: 2,
-          color: Colors.transparent,
-        );
-      }
-      return BorderSide(
-        width: 2,
-        color: Colors.transparent,
-      );
-    },
-  ),
-  visualDensity: VisualDensity.compact
-);
-
+    visualDensity: VisualDensity.compact);

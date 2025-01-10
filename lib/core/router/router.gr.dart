@@ -12,11 +12,11 @@ import 'package:auto_route/auto_route.dart' as _i11;
 import 'package:estem/features/auth/ui/login/login_screen.dart' as _i4;
 import 'package:estem/features/auth/ui/verification/verification_screen.dart'
     as _i9;
-import 'package:estem/features/home/forms/ui/forms_screen.dart' as _i1;
-import 'package:estem/features/home/main/ui/home_screen.dart' as _i2;
-import 'package:estem/features/home/main_screen.dart' as _i5;
-import 'package:estem/features/home/profile/ui/profile_screen.dart' as _i8;
-import 'package:estem/features/home/wallet/ui/wallet_screen.dart' as _i10;
+import 'package:estem/features/main/forms/ui/forms_screen.dart' as _i1;
+import 'package:estem/features/main/home/ui/home_screen.dart' as _i2;
+import 'package:estem/features/main/main_screen.dart' as _i5;
+import 'package:estem/features/main/profile/ui/profile_screen.dart' as _i8;
+import 'package:estem/features/main/wallet/ui/wallet_screen.dart' as _i10;
 import 'package:estem/features/onboarding/ui/pages/language_screen.dart' as _i3;
 import 'package:estem/features/onboarding/ui/pages/onboarding_screen.dart'
     as _i6;

@@ -7,7 +7,7 @@ import '/core/router/router.dart';
 import '/core/router/router.gr.dart';
 import '/shared/models/language.dart';
 import '/shared/widgets/app_elevated_button.dart';
-import '/shared/widgets/item_language_selector.dart';
+import '../../../../shared/widgets/item_language_selector.dart';
 import '/shared/widgets/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -4,9 +4,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '../models/questions/question_rating.dart';
+import '../../models/questions/question_rating.dart';
 import 'item_required.dart';
-import 'sizes.dart';
+import '../sizes.dart';
 
 class StarRatingItemCard extends StatelessWidget {
   const StarRatingItemCard({
@@ -19,7 +19,7 @@ class StarRatingItemCard extends StatelessWidget {
   });
 
   final StarRatingQuestion question;
-  final double? rating;
+  final int? rating;
   final int total;
   final int current;
   final Function(int) onRatingChanged;
@@ -87,34 +87,36 @@ class StarRatingItemCard extends StatelessWidget {
           ],
           const Height(16.0),
           RatingBar(
-            initialRating: rating ?? 0,
+            initialRating: (rating ?? 0).toDouble(),
             unratedColor: AppColors.gray,
             itemPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             itemSize: 20,
             itemCount: 5,
             ratingWidget: RatingWidget(
-                full: Icon(
+                full: const Icon(
                   Icons.star,
                   color: AppColors.yellow,
                   size: 20,
                 ),
-                half: Icon(
+                half: const Icon(
                   Icons.star,
                   color: AppColors.gray,
                   size: 20,
                 ),
-                empty: Icon(
+                empty: const Icon(
                   Icons.star,
                   color: AppColors.gray,
                   size: 20,
                 )),
-            onRatingUpdate: (value) {},
+            onRatingUpdate: (value) {
+              onRatingChanged(value.toInt());
+            },
           ),
-          const Height(16.0),
+          const Height(4.0),
           Text(
             rating != null ? question.ratingLabels[rating!] ?? '' : '',
             style: GoogleFonts.inter(
-              color: _getColor(rating ?? 0.0),
+              color: _getColor(rating ?? 0),
               fontSize: 12,
               height: 14.52 / 12,
               fontWeight: FontWeight.w500,
@@ -126,17 +128,17 @@ class StarRatingItemCard extends StatelessWidget {
   }
 }
 
-_getColor(double rating) {
+_getColor(int rating) {
   switch (rating) {
-    case 1.0:
+    case 1:
       return AppColors.red;
-    case 2.0:
+    case 2:
       return AppColors.orange;
-    case 3.0:
+    case 3:
       return const Color(0xFF888693);
-    case 4.0:
+    case 4:
       return AppColors.blue;
-    case 5.0:
+    case 5:
       return AppColors.green;
     default:
       return Colors.transparent;

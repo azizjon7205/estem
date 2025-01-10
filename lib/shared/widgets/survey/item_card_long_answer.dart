@@ -1,30 +1,26 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/shared/models/questions/question_option.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import 'app_text_field.dart';
+import '../../models/questions/question_short_answer.dart';
+import '../app_resizable_text_field.dart';
 import 'item_required.dart';
-import 'sizes.dart';
+import '../sizes.dart';
 
-class SelectItemCard extends StatelessWidget {
-  const SelectItemCard({
+class LongAnswerItemCard extends StatelessWidget {
+  const LongAnswerItemCard({
     super.key,
     required this.question,
     required this.onAnswerChanged,
-    required this.onOptionSelected,
-    this.option,
     this.total = 0,
     this.current = 0,
   });
 
-  final OptionQuestion question;
+  final ShortAnswerQuestion question;
   final int total;
   final int current;
-  final Option? option;
   final Function(String) onAnswerChanged;
-  final Function(Option) onOptionSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +62,11 @@ class SelectItemCard extends StatelessWidget {
           Text(
             question.question,
             style: GoogleFonts.inter(
-                color: AppColors.textStrong,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                height: 19.36 / 16),
+              color: AppColors.textStrong,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              height: 19.36 / 16,
+            ),
           ),
           if (question.image != null) ...[
             const Height(6.0),
@@ -83,48 +80,10 @@ class SelectItemCard extends StatelessWidget {
               ),
             )
           ],
-          const Height(12.0),
-          ...question.options.map(
-            (item) => GestureDetector(
-              onTap: () {
-                onOptionSelected(item);
-              },
-              behavior: HitTestBehavior.translucent,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          width: 5,
-                          color: option?.id == item.id
-                              ? AppColors.primary
-                              : AppColors.gray,
-                        ),
-                      ),
-                    ),
-                    const Width(8.0),
-                    Text(
-                      item.option,
-                      style: GoogleFonts.inter(
-                          fontSize: 14,
-                          height: 16.94 / 14,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const Height(12.0),
-          AppTextField(
+          const Height(16.0),
+          AppResizableTextField(
             onChanged: onAnswerChanged,
-            hint: "base.other".tr(),
+            hint: "question.answer".tr(),
           )
         ],
       ),
