@@ -27,7 +27,9 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
             page: LoginRoute.page, initial: false, guards: [OnboardingGuard()]),
         AutoRoute(page: VerificationRoute.page, initial: false),
-      ];
+        AutoRoute(page: EditProfileRoute.page, initial: false),
+        AutoRoute(page: EditInterestsBottomSheet.page, initial: false)
+  ];
 }
 
 class OnboardingGuard extends AutoRouteGuard {

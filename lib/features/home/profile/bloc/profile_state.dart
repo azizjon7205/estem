@@ -1,4 +1,4 @@
-import '../../../../shared/models/profile_model.dart';
+
 import 'package:equatable/equatable.dart';
 
 abstract class ProfileState extends Equatable{
@@ -17,6 +17,7 @@ class ProfileLoaded extends ProfileState{
   final String education;
   final String employmentStatus;
   final List<String> interests;
+
 
   ProfileLoaded({
     required this.name,

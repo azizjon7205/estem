@@ -32,7 +32,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void initState() {
     prefs = sl();
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, // Transparent status bar
         systemNavigationBarColor: AppColors.primary,
         statusBarIconBrightness: Brightness.dark, // Black icons
@@ -143,7 +143,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     'onboarding.skip'.tr(),
                     textAlign: TextAlign.center,
                     style: GoogleFonts.inter(
-                        color: AppColors.white.withOpacity(0.5),
+                        color: AppColors.white.withValues(alpha: 0.5),
                         fontSize: 18.0,
                         fontWeight: FontWeight.w500,
                         height: 34.0 / 18.0),
@@ -155,7 +155,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   decorator: DotsDecorator(
                       spacing: const EdgeInsets.all(4),
                       activeColor: AppColors.white,
-                      color: AppColors.white.withOpacity(0.5),
+                      color: AppColors.white.withValues(alpha: 0.5),
                       size: const Size(8.0, 8.0),
                       shape: const CircleBorder()),
                 ),

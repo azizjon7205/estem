@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, // Transparent status bar
         systemNavigationBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark, // Black icons
