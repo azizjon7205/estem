@@ -162,7 +162,7 @@ class _DropdownItemCardState extends State<DropdownItemCard> {
                         height: 23 / 14,
                         fontWeight: FontWeight.w400),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.keyboard_arrow_down,
                     size: 24,
                     color: Color(0xFF888693),

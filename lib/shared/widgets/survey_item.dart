@@ -113,7 +113,7 @@ class SurveyItem extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               height: 15.73 / 13),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Text(
                           '${survey.price}uzs',
                           style: GoogleFonts.inter(

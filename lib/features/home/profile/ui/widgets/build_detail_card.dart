@@ -10,21 +10,36 @@ class BuildDetailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        child: ListTile(
-          title: Text(
-            title,
-            style: GoogleFonts.inter(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: AppColors.primary),
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow:  [
+          BoxShadow(
+            color: AppColors.gray.withValues(alpha: 0.3), // Shadow color
+            spreadRadius: 5, // Spread radius
+            blurRadius: 10, // Blur radius
+            offset: const Offset(0, 5), // Changes position of shadow
           ),
-          subtitle: Text(
-            value,
-            style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w500),
+        ],
+      ),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+          child: ListTile(
+            title: Text(
+              title,
+              style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.primary),
+            ),
+            subtitle: Text(
+              value,
+              style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
           ),
         ),
       ),

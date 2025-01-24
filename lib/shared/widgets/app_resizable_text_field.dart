@@ -24,7 +24,7 @@ class AppResizableTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minHeight: 100,
         maxHeight: 100
       ),

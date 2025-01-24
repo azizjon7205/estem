@@ -16,7 +16,7 @@ class UpdateProfile extends ProfileEvent{
   final String education;
   final String employmentStatus;
 
-  UpdateProfile({
+    UpdateProfile({
     required this.name,
     required this.gender,
     required this.age,

@@ -36,19 +36,19 @@ ThemeData getAppTheme(BuildContext context) {
       ),
       enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.gray),
+          borderSide: const BorderSide(color: AppColors.gray),
       ),
       focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.primary),
+          borderSide: const BorderSide(color: AppColors.primary),
       ),
       errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.red),
+          borderSide: const BorderSide(color: AppColors.red),
       ),
       focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.red),
+          borderSide: const BorderSide(color: AppColors.red),
       ),
       disabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
@@ -57,7 +57,7 @@ ThemeData getAppTheme(BuildContext context) {
 
     ),
     checkboxTheme: _checkboxThemeData(),
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: const TabBarTheme(
       unselectedLabelStyle: TextStyle(
         color: Color(0xFF888693),
         fontSize: 15.0,
@@ -74,7 +74,7 @@ ThemeData getAppTheme(BuildContext context) {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        side: BorderSide(color: AppColors.gray),
+        side: const BorderSide(color: AppColors.gray),
         padding: const EdgeInsets.all(10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
       )
@@ -100,7 +100,7 @@ CheckboxThemeData _checkboxThemeData() => CheckboxThemeData(
             color: Colors.transparent,
           );
         }
-        return BorderSide(
+        return const BorderSide(
           width: 2,
           color: Colors.transparent,
         );
@@ -156,7 +156,7 @@ CheckboxThemeData _checkboxThemeData() => CheckboxThemeData(
           color: Colors.transparent,
         );
       }
-      return BorderSide(
+      return const BorderSide(
         width: 2,
         color: Colors.transparent,
       );

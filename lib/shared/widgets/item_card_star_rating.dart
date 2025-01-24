@@ -93,17 +93,17 @@ class StarRatingItemCard extends StatelessWidget {
             itemSize: 20,
             itemCount: 5,
             ratingWidget: RatingWidget(
-                full: Icon(
+                full: const Icon(
                   Icons.star,
                   color: AppColors.yellow,
                   size: 20,
                 ),
-                half: Icon(
+                half: const Icon(
                   Icons.star,
                   color: AppColors.gray,
                   size: 20,
                 ),
-                empty: Icon(
+                empty: const Icon(
                   Icons.star,
                   color: AppColors.gray,
                   size: 20,

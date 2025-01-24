@@ -1,11 +1,13 @@
+
+
 import 'package:bloc/bloc.dart';
 import 'package:estem/features/home/profile/bloc/profile_event.dart';
 import 'package:estem/features/home/profile/bloc/profile_state.dart';
-import 'package:estem/shared/models/profile_model.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileLoading()) {
     on<LoadProfile>((event, emit){
+      //dummy data
       final profile = {
         'name': 'John Macintosh',
         'gender': 'Male',
@@ -24,7 +26,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         income: profile['income'] as String,
         education: profile['education'] as String,
         employmentStatus: profile['employmentStatus'] as String,
-        interests: List<String>.from(profile['interests'] as List),
+        interests: List<String>.from(profile['interests'] as List,),
       ));
     });
     on<UpdateProfile>((event, emit) {
