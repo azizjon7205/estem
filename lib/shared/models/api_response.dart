@@ -17,7 +17,7 @@ class ApiResponse<T> {
       Map<String, dynamic> json, Function dataFromJson) {
     return ApiResponse(
       success: json["success"],
-      data: json["data"] != null && json['data'].isNotEmpty
+      data: json["data"] != null
           ? dataFromJson(json["data"])
           : null,
       error: json["error"] != null ? ApiError.fromJson(json["error"]) : null,

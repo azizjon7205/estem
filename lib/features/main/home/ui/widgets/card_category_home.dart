@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../domain/entities/home_catalog.dart';
+
 class CardCategoryHome extends StatelessWidget {
-  const CardCategoryHome({
-    super.key,
-    this.onTap,
-    required this.color,
-    required this.prefixPath,
-    required this.label,
-  });
+  const CardCategoryHome({super.key, this.onTap, required this.catalog});
 
   final GestureTapCallback? onTap;
-  final Color color;
-  final String prefixPath;
-  final String label;
+  final HomeCatalog catalog;
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +16,15 @@ class CardCategoryHome extends StatelessWidget {
       child: Container(
         height: 40,
         decoration: BoxDecoration(
-            color: color,
+            color: Color(int.tryParse('0xFF${catalog.color}') ??
+                0xFFFFFFFF),
             borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF2E2E4F).withValues(alpha: 0.1),
-              blurRadius: 20,
-              offset: const Offset(0, 6)
-            )
-          ]
-        ),
+            boxShadow: [
+              BoxShadow(
+                  color: const Color(0xFF2E2E4F).withValues(alpha: 0.1),
+                  blurRadius: 20,
+                  offset: const Offset(0, 6))
+            ]),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -41,10 +33,10 @@ class CardCategoryHome extends StatelessWidget {
               SizedBox(
                 height: 18,
                 width: 18,
-                child: SvgPicture.asset(prefixPath),
+                child: Image.network(catalog.icon),
               ),
               Text(
-                label,
+                catalog.name,
                 style: GoogleFonts.inter(
                   color: Colors.white,
                   fontSize: 15,

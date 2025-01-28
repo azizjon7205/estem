@@ -1,20 +1,14 @@
 import 'package:auto_route/annotations.dart';
-import 'package:estem/shared/models/questions/question_date.dart';
-import 'package:estem/shared/models/questions/question_scale.dart';
-import 'package:estem/shared/models/questions/question_time.dart';
-import 'package:estem/shared/models/questions/question_upload_file.dart';
-import 'package:estem/shared/widgets/survey/item_card_date_picker.dart';
-import 'package:estem/shared/widgets/survey/item_card_scale.dart';
-import 'package:estem/shared/widgets/survey/item_card_time_picker.dart';
-import 'package:estem/shared/widgets/survey/item_card_upload_file.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../shared/models/questions/question_rating.dart';
-import '../../../../shared/widgets/survey/item_card_smile.dart';
 import '/core/styles/app_colors.dart';
+import '/core/utils/injections.dart';
 import '/shared/widgets/sizes.dart';
+import 'bloc/home_bloc.dart';
+import 'bloc/home_event.dart';
 import 'widgets/main_body.dart';
 
 @RoutePage()
@@ -85,22 +79,13 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(
-        child: ScaleItemCard(
-          question: ScaleQuestion(
-            question: "This is short answer question?",
-            image: 'https://picsum.photos/id/1/200/300',
-            isRequired: true,
-            leftScale: 1,
-            rightScale: 5,
-            leftLabel: "Left Label",
-            rightLabel: "Right Label",
-          ),
-          scale: 2,
-          onScaleChanged: (value) {},
-        ),
+      body: BlocProvider(
+        create: (context) => HomeBloc(sl())
+        ..add(LoadHomeCatalogs())
+        ..add(LoadHomeSurveys())
+        ..add(LoadHomeUser()),
+        child: const MainBody(),
       ),
-      // body: const MainBody(),
     );
   }
 }
@@ -124,4 +109,3 @@ class HomeScreen extends StatelessWidget {
     )
  *
  * */
-

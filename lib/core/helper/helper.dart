@@ -70,4 +70,17 @@ class Helper {
     String formattedDate = DateFormat('dd MMMM, yyyy').format(date);
     return formattedDate;
   }
+
+  static String formatCurrency(double amount) {
+    // Create a formatter for the desired currency format
+    final NumberFormat formatter = NumberFormat.currency(
+      // locale: 'uz_UZ', // Uzbek locale
+      symbol: "", // Currency symbol
+      decimalDigits: 2, // No decimals for whole numbers
+    );
+
+    return formatter
+        .format(amount)
+        .replaceAll(',', ' ');
+  }
 }

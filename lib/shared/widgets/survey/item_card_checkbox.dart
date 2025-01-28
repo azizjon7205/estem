@@ -1,30 +1,61 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/shared/models/questions/question_option.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
+import '../../models/questions/option.dart';
+import '../../models/questions/question_checkbox.dart';
 import '../app_text_field.dart';
-import 'item_required.dart';
 import '../sizes.dart';
+import 'item_required.dart';
 
-class MultipleSelectItemCard extends StatelessWidget {
-  const MultipleSelectItemCard({
+class CheckboxItemCard extends StatefulWidget {
+  const CheckboxItemCard({
     super.key,
     required this.question,
-    required this.onAnswerChanged,
+    required this.onOtherChanged,
     required this.onOptionSelected,
     this.options,
     this.total = 0,
     this.current = 0,
+    this.other,
   });
 
-  final OptionQuestion question;
+  final CheckBoxQuestion question;
   final int total;
   final int current;
-  final List<Option>? options;
-  final Function(String) onAnswerChanged;
+  final String? other;
+  final List<dynamic>? options;
+  final Function(String) onOtherChanged;
   final Function(Option) onOptionSelected;
+
+  @override
+  State<CheckboxItemCard> createState() => _CheckboxItemCardState();
+}
+
+class _CheckboxItemCardState extends State<CheckboxItemCard> {
+  Uint8List? _imageBytes;
+
+  @override
+  void initState() {
+    super.initState();
+    _decodeImage();
+  }
+
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +80,10 @@ class MultipleSelectItemCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'question.label'
-                      .tr(args: [current.toString(), total.toString()]),
+                  'question.label'.tr(args: [
+                    widget.current.toString(),
+                    widget.total.toString()
+                  ]),
                   style: GoogleFonts.inter(
                     color: AppColors.primary,
                     fontSize: 12.0,
@@ -59,24 +92,24 @@ class MultipleSelectItemCard extends StatelessWidget {
                   ),
                 ),
               ),
-              if (question.isRequired) const ItemRequired()
+              if (widget.question.isRequired) const ItemRequired()
             ],
           ),
           const Height(6.0),
           Text(
-            question.question,
+            widget.question.question,
             style: GoogleFonts.inter(
                 color: AppColors.textStrong,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 height: 19.36 / 16),
           ),
-          if (question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -84,10 +117,10 @@ class MultipleSelectItemCard extends StatelessWidget {
             )
           ],
           const Height(12.0),
-          ...question.options.map(
+          ...widget.question.options.map(
             (item) => GestureDetector(
               onTap: () {
-                onOptionSelected(item);
+                widget.onOptionSelected(item);
               },
               behavior: HitTestBehavior.translucent,
               child: Padding(
@@ -97,7 +130,8 @@ class MultipleSelectItemCard extends StatelessWidget {
                     Icon(
                       Icons.check_circle,
                       size: 20,
-                      color: options?.any((element) => element.id == item.id) ==
+                      color: widget.options
+                                  ?.any((element) => element == item.id) ==
                               true
                           ? AppColors.primary
                           : AppColors.gray,
@@ -116,14 +150,14 @@ class MultipleSelectItemCard extends StatelessWidget {
               ),
             ),
           ),
-          if(question.hasOther)
-            ...[
-              const Height(12.0),
-              AppTextField(
-                onChanged: onAnswerChanged,
-                hint: "base.other".tr(),
-              )
-            ]
+          if (widget.question.hasOther) ...[
+            const Height(12.0),
+            AppTextField(
+              value: widget.other,
+              onChanged: widget.onOtherChanged,
+              hint: "base.other".tr(),
+            )
+          ]
         ],
       ),
     );

@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:estem/core/helper/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
 import '../../models/questions/question_date.dart';
-import 'item_required.dart';
 import '../sizes.dart';
+import 'item_required.dart';
 
 class DatePickerItemCard extends StatefulWidget {
   const DatePickerItemCard({
@@ -30,11 +34,30 @@ class DatePickerItemCard extends StatefulWidget {
 
 class _DatePickerItemCardState extends State<DatePickerItemCard> {
   bool showPicker = false;
+  Uint8List? _imageBytes;
 
   void onPickerChanged() {
     setState(() {
       showPicker = !showPicker;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _decodeImage();
+  }
+
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
   }
 
   @override
@@ -91,12 +114,12 @@ class _DatePickerItemCardState extends State<DatePickerItemCard> {
               ),
             ),
           ),
-          if (widget.question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                widget.question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -126,7 +149,10 @@ class _DatePickerItemCardState extends State<DatePickerItemCard> {
                   SvgPicture.asset('assets/icons/ic_calendar.svg'),
                   Expanded(
                     child: Text(
-                      widget.date ?? 'question.choose_from_calendar'.tr(),
+                      widget.date != null
+                          ? Helper.dateFormat(
+                              DateTime.tryParse(widget.date!) ?? DateTime.now())
+                          : 'question.choose_from_calendar'.tr(),
                       style: GoogleFonts.inter(
                         color: widget.date != null
                             ? AppColors.textStrong
@@ -163,10 +189,15 @@ class _DatePickerItemCardState extends State<DatePickerItemCard> {
                         )
                       ]),
                   child: CalendarDatePicker(
-                    initialDate: DateTime.now(),
+                    initialDate: widget.date != null
+                        ? (DateTime.tryParse(widget.date!) ?? DateTime.now())
+                        : DateTime.now(),
                     firstDate: DateTime(1980),
                     lastDate: DateTime(2050),
-                    onDateChanged: widget.onDateChanged,
+                    onDateChanged: (value) {
+                      widget.onDateChanged(value);
+                      onPickerChanged();
+                      },
                   ),
                 ),
               ),

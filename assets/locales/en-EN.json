@@ -1,11 +1,20 @@
 {
   "base": {
     "name": "Nomi",
-    "status": "Status",
+    "status": {
+      "label":"Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
     "other": "Other",
     "search_hint": "Qidiruv...",
+    "select": "Select",
+    "no": "No",
+    "yes": "Yes",
     "actions": {
       "label": "Amallar",
+      "go_back": "Go back",
+      "go_home": "Go home",
       "confirm": "Tasdiqlash",
       "delete": "O'chirish",
       "upload": "Yuklash",
@@ -16,7 +25,12 @@
       "edit": "Tahrirlash",
       "add": "Qo'shish",
       "setup": "Sozlash",
-      "save": "Saqlash"
+      "save": "Saqlash",
+      "share": "Share",
+      "view": "View",
+      "submit": "Submit",
+      "duplicate": "Duplicate",
+      "browse_file": "Browse file"
     }
   },
   "language": {
@@ -57,7 +71,15 @@
   },
   "home": {
     "recent": "Recent",
-    "see_all": "See All"
+    "see_all": "See All",
+    "for_you": "For you"
+  },
+  "forms": {
+    "published": "Published",
+    "draft": "Draft",
+    "completed": "Completed",
+    "empty_title": "No Surveys Yet",
+    "empty_message": "Lorem ipsum dolor sit amet, consectetur "
   },
   "question": {
     "label": "QUESTION {} OF {}",
@@ -65,6 +87,85 @@
     "answer": "Answer",
     "choose_from_calendar": "Choose from calendar",
     "upload_file": "Upload your file here",
-    "browse_file": "Browse file"
+    "browse_file": "Browse file",
+    "form_error": "Title is required",
+    "add_option": "Add Option",
+    "option_hint": "Option {}",
+    "show_options": "Show Options ({})",
+    "show_scale": "Show Scale ({})",
+    "add_other": "Add 'Other'",
+    "left_label": "Left label (optional)",
+    "right_label": "Right label (optional)",
+    "types": {
+      "short_answer": "Short Answer",
+      "long_answer": "Long Answer",
+      "email": "Email",
+      "number": "Number",
+      "select": "Select",
+      "checkbox": "Checkbox",
+      "dropdown": "Dropdown",
+      "linear_scale": "Linear scale",
+      "date": "Date",
+      "time": "Time",
+      "file_upload": "File upload",
+      "star_rating": "Star rating",
+      "smile": "Smile"
+    },
+    "hints": {
+      "short_answer": "Question short Answer",
+      "long_answer": "Question long Answer",
+      "email": "Question email",
+      "number": "Question number",
+      "select": "Question option",
+      "checkbox": "Question multiple select",
+      "dropdown": "Question dropdown",
+      "linear_scale": "Question linear scale",
+      "date": "Question date",
+      "time": "Question time",
+      "file_upload": "Question file upload",
+      "star_rating": "Question star rating",
+      "smile": "Question smile"
+    },
+    "strings": {
+      "worst": "Worst",
+      "dislike": "Dislike",
+      "neutral": "Neutral",
+      "like": "Like",
+      "best": "Best",
+      "not_good": "Not Good",
+      "good": "Good",
+      "very_good": "Very Good"
+    }
+  },
+  "survey": {
+    "estimated_time": "Estimated time {}",
+    "you_will_earn": "You are about to earn: {}",
+    "start_survey": "Start survey"
+  },
+  "create": {
+    "title": "Add new forms",
+    "home": "Home",
+    "builder": "Builder",
+    "preview": "Preview",
+    "submit": "Submit",
+    "upload_image": "Upload your image here",
+    "form_title": "Title",
+    "form_description": "Description",
+    "form_duration": "Duration",
+    "form_price": "Price",
+    "choose_category": "Choose category",
+    "choose_region": "Choose region (Optional)",
+    "required": "Required",
+    "draft": "Draft",
+    "draft_message": "Would you like to save this form as a draft to avoid losing your changes?",
+    "incomplete_question": "Incomplete Question",
+    "incomplete_message": "All required fields must be filled",
+    "insufficient_funds": "Insufficient funds",
+    "insufficient_message": "Top up your account"
+  },
+  "wallet": {
+    "congratulations": "Congratulations",
+    "top_up_message": "Money has been transferred",
+    "card_message": "Card has been added"
   }
 }

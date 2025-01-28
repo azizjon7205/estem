@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:estem/shared/models/questions/question_email.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '../../models/questions/question_short_answer.dart';
 import '../app_text_field.dart';
 import '../sizes.dart';
 import 'item_required.dart';
@@ -18,7 +21,7 @@ class EmailItemCard extends StatefulWidget {
     this.value,
   });
 
-  final ShortAnswerQuestion question;
+  final EmailQuestion question;
   final int total;
   final int current;
   final String? value;
@@ -29,13 +32,26 @@ class EmailItemCard extends StatefulWidget {
 }
 
 class _EmailItemCardState extends State<EmailItemCard> {
-  late TextEditingController textEditingController;
+  Uint8List? _imageBytes;
 
   @override
   void initState() {
-    textEditingController = TextEditingController(text: widget.value);
     super.initState();
+    _decodeImage();
   }
+
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -85,12 +101,12 @@ class _EmailItemCardState extends State<EmailItemCard> {
               height: 19.36 / 16,
             ),
           ),
-          if (widget.question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                widget.question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -99,7 +115,7 @@ class _EmailItemCardState extends State<EmailItemCard> {
           ],
           const Height(16.0),
           AppTextField(
-            controller: textEditingController,
+            value: widget.value,
             onChanged: widget.onAnswerChanged,
             hint: "question.answer".tr(),
           )

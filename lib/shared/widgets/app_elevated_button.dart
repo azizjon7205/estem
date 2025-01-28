@@ -11,6 +11,7 @@ class AppElevatedButton extends StatelessWidget {
       this.margin,
       required this.label,
       this.enabled = true,
+        this.height = 58.0,
       this.showLoader = false,
       this.hasSuffixNext = true});
 
@@ -20,6 +21,7 @@ class AppElevatedButton extends StatelessWidget {
   final bool hasSuffixNext;
   final bool enabled;
   final bool showLoader;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class AppElevatedButton extends StatelessWidget {
       onTap: enabled ? onTap : null,
       child: Container(
         margin: margin,
+        height: height,
         width: double.infinity,
         decoration: BoxDecoration(
             color: enabled ? AppColors.primary : const Color(0xFFEEEEEF),

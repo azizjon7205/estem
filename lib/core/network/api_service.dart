@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
+import 'package:estem/core/router/router.dart';
+import 'package:estem/core/router/router.gr.dart';
 import 'package:flutter/foundation.dart';
 
 import '/shared/data/data_sources/local/app_shared_prefs.dart';
@@ -24,7 +26,7 @@ class ApiService {
     _dio.interceptors.add(ChuckerDioInterceptor());
     _dio.interceptors.add(_loggerInterceptor());
     _dio.interceptors.add(_appQueuedInterceptorsWrapper());
-    // _dio.interceptors.add(_interceptorsWrapper());
+    _dio.interceptors.add(_interceptorsWrapper());
   }
 
   Future<T> get<T>(
@@ -265,8 +267,10 @@ class ApiService {
         return r.next(options);
       },
       onError: (e, handler) async {
+        print("OnError app err-------------- ${e.response?.statusCode} --- ${e.requestOptions.path}");
         if (e.response?.statusCode == 401 &&
-            _sharedPrefs.getAuthToken() != null) {
+            _sharedPrefs.getAuthToken() != null && !e.requestOptions.uri.toString().contains('refresh-token')) {
+
           try {
             final response = await _dio.post('/api/v1/auth/refresh-token', data: {
               'refresh_token': _sharedPrefs.getRefreshToken(),
@@ -283,9 +287,20 @@ class ApiService {
                 // _sharedPrefs.setRefreshToken(result.data!.refreshToken);
                 return handler.resolve(await _dio.fetch(e.requestOptions));
               } else {
+                _sharedPrefs.removeAuthToken();
+                _sharedPrefs.removeRefreshToken();
+                _sharedPrefs.removePhoneNumber();
+                navController.replaceAll([const MainRoute()]);
                 return handler.next(e);
               }
             } else {
+              if (response.statusCode == 401) {
+                _sharedPrefs.removeAuthToken();
+                _sharedPrefs.removeRefreshToken();
+                await _sharedPrefs.removePhoneNumber();
+                navController.replaceAll([const MainRoute()]);
+
+              }
               return handler.next(e);
             }
           } catch (_) {
@@ -297,6 +312,42 @@ class ApiService {
       onResponse: (Response<dynamic> response,
           ResponseInterceptorHandler handler) async {
         return handler.next(response);
+      },
+    );
+  }
+
+  /// App interceptor
+  InterceptorsWrapper _interceptorsWrapper() {
+    return InterceptorsWrapper(
+      onRequest: (RequestOptions options, r) async {
+        Map<String, dynamic> headers = await Helper.getHeaders();
+        print("OnRequest ___________ ${options.uri.path}");
+        if (options.uri.path.contains('/api/v1/auth/refresh-token')) {
+          print("OnRequest for refresh");
+          headers.remove('authorization');
+        }
+
+        options.headers = headers;
+        _dio.options.headers = headers;
+
+        return r.next(options);
+      },
+      onResponse: (response, handler) async {
+        print("OnError app res-------------- ${response.statusCode}");
+        if ("${(response.data["code"] ?? "0")}" != "0") {
+          return handler.resolve(response);
+          // return handler.reject(DioError(requestOptions: response.requestOptions, response: response, error: response, type: DioErrorType.response));
+        } else {
+          return handler.next(response);
+        }
+      },
+      onError: (error, handler) {
+        try {
+          return handler.next(error);
+        } catch (e) {
+          return handler.reject(error);
+          // onUnexpectedError(handler, error);
+        }
       },
     );
   }

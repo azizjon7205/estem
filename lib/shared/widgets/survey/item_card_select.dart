@@ -1,30 +1,60 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/shared/models/questions/question_option.dart';
+import 'package:estem/shared/models/questions/question_select.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
+import '../../models/questions/option.dart';
 import '../app_text_field.dart';
-import 'item_required.dart';
 import '../sizes.dart';
+import 'item_required.dart';
 
-class SelectItemCard extends StatelessWidget {
+class SelectItemCard extends StatefulWidget {
   const SelectItemCard({
     super.key,
     required this.question,
-    required this.onAnswerChanged,
+    required this.onOtherChanged,
     required this.onOptionSelected,
     this.option,
     this.total = 0,
-    this.current = 0,
+    this.current = 0, this.other,
   });
 
-  final OptionQuestion question;
+  final SelectQuestion question;
   final int total;
   final int current;
-  final Option? option;
-  final Function(String) onAnswerChanged;
+  final dynamic option;
+  final String? other;
+  final Function(String) onOtherChanged;
   final Function(Option) onOptionSelected;
+
+  @override
+  State<SelectItemCard> createState() => _SelectItemCardState();
+}
+
+class _SelectItemCardState extends State<SelectItemCard> {
+  Uint8List? _imageBytes;
+
+  @override
+  void initState() {
+    super.initState();
+    _decodeImage();
+  }
+
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +80,7 @@ class SelectItemCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   'question.label'
-                      .tr(args: [current.toString(), total.toString()]),
+                      .tr(args: [widget.current.toString(), widget.total.toString()]),
                   style: GoogleFonts.inter(
                     color: AppColors.primary,
                     fontSize: 12.0,
@@ -59,24 +89,24 @@ class SelectItemCard extends StatelessWidget {
                   ),
                 ),
               ),
-              if (question.isRequired) const ItemRequired()
+              if (widget.question.isRequired) const ItemRequired()
             ],
           ),
           const Height(6.0),
           Text(
-            question.question,
+            widget.question.question,
             style: GoogleFonts.inter(
                 color: AppColors.textStrong,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 height: 19.36 / 16),
           ),
-          if (question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -84,10 +114,10 @@ class SelectItemCard extends StatelessWidget {
             )
           ],
           const Height(12.0),
-          ...question.options.map(
+          ...widget.question.options.map(
             (item) => GestureDetector(
               onTap: () {
-                onOptionSelected(item);
+                widget.onOptionSelected(item);
               },
               behavior: HitTestBehavior.translucent,
               child: Padding(
@@ -101,7 +131,7 @@ class SelectItemCard extends StatelessWidget {
                         shape: BoxShape.circle,
                         border: Border.all(
                           width: 5,
-                          color: option?.id == item.id
+                          color: widget.option == item.id
                               ? AppColors.primary
                               : AppColors.gray,
                         ),
@@ -121,11 +151,14 @@ class SelectItemCard extends StatelessWidget {
               ),
             ),
           ),
-          const Height(12.0),
-          AppTextField(
-            onChanged: onAnswerChanged,
-            hint: "base.other".tr(),
-          )
+          if(widget.question.hasOther)
+            ...[
+              const Height(12.0),
+              AppTextField(
+                onChanged: widget.onOtherChanged,
+                hint: "base.other".tr(),
+              )
+            ]
         ],
       ),
     );

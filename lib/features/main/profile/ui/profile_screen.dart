@@ -7,6 +7,10 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Center(
+        child: Text('Profile screen Coming soon...'),
+      ),
+    );
   }
 }

@@ -1,12 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:estem/core/helper/helper.dart';
+import 'package:estem/features/main/home/ui/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '/shared/models/survey.dart';
 import '/shared/widgets/sizes.dart';
 import '/shared/widgets/survey_item.dart';
+import '../../../../../core/router/router.dart';
+import '../../../../../core/router/router.gr.dart';
 import 'card_category_home.dart';
 
 class MainBody extends StatelessWidget {
@@ -14,6 +18,7 @@ class MainBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.watch<HomeBloc>();
     return Column(
       children: [
         Stack(
@@ -38,7 +43,7 @@ class MainBody extends StatelessWidget {
                   children: [
                     const Width(24),
                     Text(
-                      '1 234 567.00 uzs',
+                      '${Helper.formatCurrency(controller.state.user?.balance ?? 0.0)} uzs',
                       style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 24.0,
@@ -50,89 +55,147 @@ class MainBody extends StatelessWidget {
                 ),
               ),
             ),
-            const Positioned(
+            Positioned(
               bottom: 0,
               left: 24,
               right: 24,
               child: Row(
                 spacing: 12,
                 children: [
-                  Expanded(
-                    child: CardCategoryHome(
-                      color: AppColors.red,
-                      prefixPath: 'assets/icons/ic_sports.svg',
-                      label: 'Sports',
-                    ),
-                  ),
-                  Expanded(
-                    child: CardCategoryHome(
-                      color: AppColors.orange,
-                      prefixPath: 'assets/icons/ic_music.svg',
-                      label: 'Music',
-                    ),
-                  ),
-                  Expanded(
-                    child: CardCategoryHome(
-                      color: AppColors.green,
-                      prefixPath: 'assets/icons/ic_science.svg',
-                      label: 'Science',
-                    ),
-                  ),
+                  ...context.watch<HomeBloc>().state.catalogs.map(
+                        (e) => Expanded(
+                          child: CardCategoryHome(
+                            catalog: e,
+                          ),
+                        ),
+                      ),
                 ],
               ),
             ),
           ],
         ),
-        const Height(24),
+        const Height(12),
         Expanded(
           child: ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'home.recent'.tr(),
-                      style: GoogleFonts.inter(
-                          color: AppColors.textStrong,
-                          fontSize: 18,
-                          height: 34 / 18,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    GestureDetector(
-                      child: Row(
-                        spacing: 5,
-                        children: [
-                          Text(
-                            'home.see_all'.tr(),
-                            style: GoogleFonts.inter(
-                              color: AppColors.textSub,
-                              fontSize: 14,
-                              height: 23 / 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          SvgPicture.asset('assets/icons/ic_arrow_right.svg')
-                        ],
+              if (controller.state.surveys.recentSurveys.isNotEmpty) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'home.recent'.tr(),
+                        style: GoogleFonts.inter(
+                            color: AppColors.textStrong,
+                            fontSize: 18,
+                            height: 34 / 18,
+                            fontWeight: FontWeight.w500),
                       ),
-                    )
-                  ],
+                      GestureDetector(
+                        child: Row(
+                          spacing: 5,
+                          children: [
+                            Text(
+                              'home.see_all'.tr(),
+                              style: GoogleFonts.inter(
+                                color: AppColors.textSub,
+                                fontSize: 14,
+                                height: 23 / 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SvgPicture.asset('assets/icons/ic_arrow_right.svg')
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              const Height(11),
-              ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, i) => SurveyItem(
-                  survey: dummySurvey(),
-                  isSavedBookmark: false,
-                  onSurveySavedBookmark: (value) {},
+                ListView.separated(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, i) => SurveyItem(
+                    onTap: () {
+                      navController.push(StartSurveyRoute(
+                          survey: controller.state.surveys.recentSurveys[i],
+                          onStartSurvey: () {
+                            navController.push(SurveyRoute(
+                              id: controller.state.surveys.recentSurveys[i].id,
+                              title: controller
+                                  .state.surveys.recentSurveys[i].title,
+                            ));
+                          }));
+                    },
+                    survey: controller.state.surveys.recentSurveys[i],
+                    isSavedBookmark: false,
+                    onSurveySavedBookmark: (value) {},
+                  ),
+                  separatorBuilder: (context, i) => const Height(8.0),
+                  itemCount: controller.state.surveys.recentSurveys.length,
                 ),
-                separatorBuilder: (context, i) => const Height(8.0),
-                itemCount: 2,
-              )
+              ],
+              if (controller.state.surveys.recommendedSurveys.isNotEmpty) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'home.for_you'.tr(),
+                        style: GoogleFonts.inter(
+                            color: AppColors.textStrong,
+                            fontSize: 18,
+                            height: 34 / 18,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      GestureDetector(
+                        child: Row(
+                          spacing: 5,
+                          children: [
+                            Text(
+                              'home.see_all'.tr(),
+                              style: GoogleFonts.inter(
+                                color: AppColors.textSub,
+                                fontSize: 14,
+                                height: 23 / 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SvgPicture.asset('assets/icons/ic_arrow_right.svg')
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                ListView.separated(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, i) => SurveyItem(
+                    onTap: () {
+                      navController.push(StartSurveyRoute(
+                          survey: controller.state.surveys.recommendedSurveys[i],
+                          onStartSurvey: () {
+                            navController.push(SurveyRoute(
+                              id: controller.state.surveys.recommendedSurveys[i].id,
+                              title: controller
+                                  .state.surveys.recommendedSurveys[i].title,
+                            ));
+                          }));
+                    },
+                    survey: controller.state.surveys.recommendedSurveys[i],
+                    isSavedBookmark: false,
+                    onSurveySavedBookmark: (value) {},
+                  ),
+                  separatorBuilder: (context, i) => const Height(8.0),
+                  itemCount: controller.state.surveys.recommendedSurveys.length,
+                ),
+              ]
             ],
           ),
         ),

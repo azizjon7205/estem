@@ -9,7 +9,7 @@ class AppResizableTextField extends StatelessWidget {
       this.keyboardType, this.maxLines = 1,
         this.onChanged,
         this.inputFormatters,
-      this.hint, this.isReadOnly = false, this.controller, this.focusNode});
+      this.hint, this.isReadOnly = false, this.controller, this.focusNode, this.value});
 
   final EdgeInsetsGeometry? contentPadding;
   final TextInputType? keyboardType;
@@ -20,6 +20,7 @@ class AppResizableTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
   final FocusNode? focusNode;
+  final String? value;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class AppResizableTextField extends StatelessWidget {
         focusNode: focusNode,
         expands: true,
         maxLines: null,
+        initialValue: value,
         cursorColor: AppColors.primary,
         readOnly: isReadOnly,
         onChanged: onChanged,

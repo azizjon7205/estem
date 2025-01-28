@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
 import '../../models/questions/question_rating.dart';
-import 'item_required.dart';
 import '../sizes.dart';
+import 'item_required.dart';
 
-class StarRatingItemCard extends StatelessWidget {
+class StarRatingItemCard extends StatefulWidget {
   const StarRatingItemCard({
     super.key,
     required this.question,
@@ -23,6 +26,31 @@ class StarRatingItemCard extends StatelessWidget {
   final int total;
   final int current;
   final Function(int) onRatingChanged;
+
+  @override
+  State<StarRatingItemCard> createState() => _StarRatingItemCardState();
+}
+
+class _StarRatingItemCardState extends State<StarRatingItemCard> {
+  Uint8List? _imageBytes;
+
+  @override
+  void initState() {
+    super.initState();
+    _decodeImage();
+  }
+
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +76,7 @@ class StarRatingItemCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   'question.label'
-                      .tr(args: [current.toString(), total.toString()]),
+                      .tr(args: [widget.current.toString(), widget.total.toString()]),
                   style: GoogleFonts.inter(
                     color: AppColors.primary,
                     fontSize: 12.0,
@@ -57,14 +85,14 @@ class StarRatingItemCard extends StatelessWidget {
                   ),
                 ),
               ),
-              if (question.isRequired) const ItemRequired()
+              if (widget.question.isRequired) const ItemRequired()
             ],
           ),
           const Height(6.0),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              question.question,
+              widget.question.question,
               style: GoogleFonts.inter(
                 color: AppColors.textStrong,
                 fontSize: 16,
@@ -73,12 +101,12 @@ class StarRatingItemCard extends StatelessWidget {
               ),
             ),
           ),
-          if (question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -87,7 +115,7 @@ class StarRatingItemCard extends StatelessWidget {
           ],
           const Height(16.0),
           RatingBar(
-            initialRating: (rating ?? 0).toDouble(),
+            initialRating: (widget.rating ?? 0).toDouble(),
             unratedColor: AppColors.gray,
             itemPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             itemSize: 20,
@@ -109,14 +137,14 @@ class StarRatingItemCard extends StatelessWidget {
                   size: 20,
                 )),
             onRatingUpdate: (value) {
-              onRatingChanged(value.toInt());
+              widget.onRatingChanged(value.toInt());
             },
           ),
           const Height(4.0),
           Text(
-            rating != null ? question.ratingLabels[rating!] ?? '' : '',
+            widget.rating != null ? widget.question.ratingLabels[widget.rating!] ?? '' : '',
             style: GoogleFonts.inter(
-              color: _getColor(rating ?? 0),
+              color: _getColor(widget.rating ?? 0),
               fontSize: 12,
               height: 14.52 / 12,
               fontWeight: FontWeight.w500,

@@ -13,6 +13,7 @@ class AppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes => [
+        AutoRoute(page: TestAppRoute.page, initial: false),
         AutoRoute(page: MainRoute.page, initial: true, guards: [
           AuthenticationGuard()
         ], children: [
@@ -27,6 +28,13 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
             page: LoginRoute.page, initial: false, guards: [OnboardingGuard()]),
         AutoRoute(page: VerificationRoute.page, initial: false),
+        AutoRoute(page: StartSurveyRoute.page, path: '/survey', initial: false),
+        AutoRoute(page: SurveyRoute.page, initial: false),
+        AutoRoute(page: CreateSurveyRoute.page, initial: false, children: [
+          AutoRoute(page: BuilderRoute.page, initial: true),
+          AutoRoute(page: StartSurveyRoute.page, initial: false),
+          AutoRoute(page: SurveyRoute.page, initial: false),
+        ]),
       ];
 }
 

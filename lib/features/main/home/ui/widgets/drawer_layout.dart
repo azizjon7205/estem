@@ -1,8 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:estem/core/router/router.dart';
+import 'package:estem/core/router/router.gr.dart';
+import 'package:estem/shared/data/data_sources/local/app_shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/utils/injections.dart';
 import '/shared/widgets/sizes.dart';
 import 'drawer_menu_item.dart';
 
@@ -79,7 +83,12 @@ class DrawerLayout extends StatelessWidget {
                     DrawerMenuItem(
                       leadingPath: 'assets/icons/ic_sign_out.svg',
                       label: 'main.sign_out'.tr(),
-                      onTap: () {},
+                      onTap: () {
+                        sl<AppSharedPrefs>()
+                          ..removePhoneNumber()
+                          ..removeAuthToken();
+                        navController.replaceAll([const MainRoute()]);
+                      },
                     ),
                   ],
                 ),

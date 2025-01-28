@@ -1,12 +1,15 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '../../models/questions/question_option.dart';
-import 'item_required.dart';
+import '../../models/questions/option.dart';
+import '../../models/questions/question_dropdown.dart';
 import '../sizes.dart';
+import 'item_required.dart';
 
 class DropdownItemCard extends StatefulWidget {
   const DropdownItemCard({
@@ -18,8 +21,8 @@ class DropdownItemCard extends StatefulWidget {
     this.current = 0,
   });
 
-  final OptionQuestion question;
-  final Option? option;
+  final DropdownQuestion question;
+  final dynamic option;
   final int total;
   final int current;
   final Function(Option) onOptionSelected;
@@ -30,33 +33,38 @@ class DropdownItemCard extends StatefulWidget {
 
 class _DropdownItemCardState extends State<DropdownItemCard> {
   final GlobalKey dropdownKey = GlobalKey();
-  double baseHeight = 0;
   late bool isMenuExpanded;
+
+  Uint8List? _imageBytes;
 
   @override
   void initState() {
-    baseHeight = 155 + (widget.question.image != null ? 156 : 0);
     isMenuExpanded = false;
     super.initState();
+    _decodeImage();
   }
 
-  void onMenuStateChanged(bool value) {
-    setState(() {
-      isMenuExpanded = value;
-      if (value == true) {
-        baseHeight = baseHeight + 39 * widget.question.options.length + 6;
-      } else {
-        baseHeight = baseHeight - 39 * widget.question.options.length - 6;
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
+  }
 
-      }
+  void onMenuStateChanged() {
+    setState(() {
+      isMenuExpanded = !isMenuExpanded;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // duration: const Duration(seconds: 1),
-      // height: baseHeight,
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16.0),
       decoration: BoxDecoration(
@@ -101,12 +109,12 @@ class _DropdownItemCardState extends State<DropdownItemCard> {
                 fontWeight: FontWeight.w500,
                 height: 19.36 / 16),
           ),
-          if (widget.question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                widget.question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -114,53 +122,32 @@ class _DropdownItemCardState extends State<DropdownItemCard> {
             )
           ],
           const Height(16.0),
-          DropdownButtonHideUnderline(
-              child: DropdownButton2<Option>(
-            onMenuStateChange: onMenuStateChanged,
-            key: dropdownKey,
-            alignment: Alignment.center,
-            menuItemStyleData: const MenuItemStyleData(
-                overlayColor: WidgetStateColor.transparent),
-            dropdownStyleData: DropdownStyleData(
-              // padding: const EdgeInsets.symmetric(vertical: 10),
-              offset: const Offset(0, 12),
-              // maxHeight: 300,
-              scrollPadding: const EdgeInsets.symmetric(vertical: 2.0),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF493E83).withValues(alpha: 0.1),
-                    offset: const Offset(0, 16),
-                    blurRadius: 32,
-                  )
-                ],
-              ),
-            ),
-            onChanged: (value) {},
-            isExpanded: true,
-            buttonStyleData: const ButtonStyleData(
-                overlayColor: WidgetStateColor.transparent),
-            customButton: Container(
+          GestureDetector(
+            onTap: onMenuStateChanged,
+            child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.0),
                   border: Border.all(color: const Color(0xFFE4DFDF))),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              padding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     widget.option != null
-                        ? widget.option!.option
+                        ? widget.question.options
+                        .firstWhere(
+                            (element) => element.id == widget.option!)
+                        .option
                         : 'base.select'.tr(),
                     style: GoogleFonts.inter(
-                        color: widget.option == null
-                            ? const Color(0xFF747688)
-                            : const Color(0xFF29253C),
-                        fontSize: 14,
-                        height: 23 / 14,
-                        fontWeight: FontWeight.w400),
+                      color: widget.option == null
+                          ? const Color(0xFF747688)
+                          : const Color(0xFF29253C),
+                      fontSize: 14,
+                      height: 23 / 14,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                   const Icon(
                     Icons.keyboard_arrow_down,
@@ -170,35 +157,66 @@ class _DropdownItemCardState extends State<DropdownItemCard> {
                 ],
               ),
             ),
-            items: widget.question.options
-                .map(
-                  (item) => DropdownMenuItem(
-                    onTap: () {
-                      widget.onOptionSelected(item);
-                    },
-                    value: item,
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: item.id == widget.option?.id
-                            ? const Color(0xFFDDE1FF)
-                            : Colors.transparent,
-                      ),
-                      child: Text(
-                        item.option,
-                        style: GoogleFonts.inter(
-                            color: const Color(0xFF29253C),
-                            fontSize: 14,
-                            height: 23 / 14,
-                            fontWeight: FontWeight.w400),
-                      ),
+          ),
+          Visibility(
+            visible: isMenuExpanded,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Transform.translate(
+                offset: const Offset(0, -15),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  constraints: const BoxConstraints(
+                    maxHeight: 200,
+                    minHeight: 0
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 32,
+                          offset: const Offset(0, 16),
+                          color: const Color(0xFF493E83).withValues(alpha: 0.1),
+                        )
+                      ]),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ...widget.question.options
+                            .map(
+                              (item) => GestureDetector(
+                            onTap: () {
+                              widget.onOptionSelected(item);
+                              onMenuStateChanged();
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                color: item.id == widget.option
+                                    ? const Color(0xFFDDE1FF)
+                                    : Colors.transparent,
+                              ),
+                              child: Text(
+                                item.option,
+                                style: GoogleFonts.inter(
+                                  color: const Color(0xFF29253C),
+                                  fontSize: 14,
+                                  height: 23 / 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                )
-                .toList(),
-          ),
+                ),
+              ),
+            ),
           ),
         ],
       ),

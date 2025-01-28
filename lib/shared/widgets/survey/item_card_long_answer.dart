@@ -1,26 +1,56 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '../../models/questions/question_short_answer.dart';
+import '../../models/questions/question_long_answer.dart';
 import '../app_resizable_text_field.dart';
-import 'item_required.dart';
 import '../sizes.dart';
+import 'item_required.dart';
 
-class LongAnswerItemCard extends StatelessWidget {
+class LongAnswerItemCard extends StatefulWidget {
   const LongAnswerItemCard({
     super.key,
     required this.question,
     required this.onAnswerChanged,
     this.total = 0,
     this.current = 0,
+    this.value,
   });
 
-  final ShortAnswerQuestion question;
+  final LongAnswerQuestion question;
   final int total;
   final int current;
+  final String? value;
   final Function(String) onAnswerChanged;
+
+  @override
+  State<LongAnswerItemCard> createState() => _LongAnswerItemCardState();
+}
+
+class _LongAnswerItemCardState extends State<LongAnswerItemCard> {
+  Uint8List? _imageBytes;
+
+  @override
+  void initState() {
+    super.initState();
+    _decodeImage();
+  }
+
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +75,10 @@ class LongAnswerItemCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'question.label'
-                      .tr(args: [current.toString(), total.toString()]),
+                  'question.label'.tr(args: [
+                    widget.current.toString(),
+                    widget.total.toString()
+                  ]),
                   style: GoogleFonts.inter(
                     color: AppColors.primary,
                     fontSize: 12.0,
@@ -55,12 +87,12 @@ class LongAnswerItemCard extends StatelessWidget {
                   ),
                 ),
               ),
-              if (question.isRequired) const ItemRequired()
+              if (widget.question.isRequired) const ItemRequired()
             ],
           ),
           const Height(6.0),
           Text(
-            question.question,
+            widget.question.question,
             style: GoogleFonts.inter(
               color: AppColors.textStrong,
               fontSize: 16,
@@ -68,12 +100,12 @@ class LongAnswerItemCard extends StatelessWidget {
               height: 19.36 / 16,
             ),
           ),
-          if (question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -82,7 +114,8 @@ class LongAnswerItemCard extends StatelessWidget {
           ],
           const Height(16.0),
           AppResizableTextField(
-            onChanged: onAnswerChanged,
+            value: widget.value,
+            onChanged: widget.onAnswerChanged,
             hint: "question.answer".tr(),
           )
         ],

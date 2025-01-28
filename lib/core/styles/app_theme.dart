@@ -26,10 +26,20 @@ ThemeData getAppTheme(BuildContext context) {
       contentPadding:
           const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
       isDense: true,
+      alignLabelWithHint: true,
       hintStyle: const TextStyle(
         fontSize: 14.0,
         height: 24 / 14,
         color: Color(0xFF747688),
+      ),
+      labelStyle: const TextStyle(
+        fontSize: 14.0,
+        height: 24 / 14,
+        color: Color(0xFF747688),
+      ),
+      floatingLabelStyle: const TextStyle(
+        fontSize: 14.0,
+        color: AppColors.primary,
       ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
@@ -37,7 +47,7 @@ ThemeData getAppTheme(BuildContext context) {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(color: AppColors.gray),
+        borderSide: const BorderSide(color: AppColors.gray),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
@@ -51,8 +61,10 @@ ThemeData getAppTheme(BuildContext context) {
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide(color: AppColors.red),
       ),
-      disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+      disabledBorder:  OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.gray),
+      ),
     ),
     checkboxTheme: _checkboxThemeData(),
     tabBarTheme: TabBarTheme(
@@ -101,6 +113,17 @@ ThemeData getAppTheme(BuildContext context) {
       yearStyle: TextStyle(),
       headerHeadlineStyle: TextStyle(),
     ),
+    switchTheme: SwitchThemeData(
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+      trackOutlineColor: WidgetStateProperty.all(AppColors.gray),
+      thumbColor: WidgetStateProperty.all(AppColors.white),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppColors.primary;
+        }
+        return AppColors.gray;
+      }),
+    )
   );
 }
 

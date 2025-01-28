@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,6 +37,27 @@ class TimePickerItemCard extends StatefulWidget {
 class _TimePickerItemCardState extends State<TimePickerItemCard> {
   bool showHourPicker = false;
   bool showMinutesPicker = false;
+  Uint8List? _imageBytes;
+
+  @override
+  void initState() {
+    print('Hour: ${widget.hour} :: minutes: ${widget.minutes}');
+    super.initState();
+    _decodeImage();
+  }
+
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
+  }
+
 
   void onHourPickerChanged() {
     setState(() {
@@ -98,12 +122,12 @@ class _TimePickerItemCardState extends State<TimePickerItemCard> {
               height: 19.36 / 16,
             ),
           ),
-          if (widget.question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                widget.question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -113,7 +137,6 @@ class _TimePickerItemCardState extends State<TimePickerItemCard> {
           const Height(16.0),
           Container(
             width: 144,
-            // height: 59,
             padding:
                 const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15.0),
             decoration: BoxDecoration(
@@ -231,7 +254,7 @@ class _TimePickerItemCardState extends State<TimePickerItemCard> {
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
                       width: 42,
                       constraints: const BoxConstraints(
-                        maxHeight: 112,
+                        maxHeight: 120,
                       ),
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -280,7 +303,7 @@ class _TimePickerItemCardState extends State<TimePickerItemCard> {
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
                       width: 42,
                       constraints: const BoxConstraints(
-                        maxHeight: 112,
+                        maxHeight: 120,
                       ),
                       decoration: BoxDecoration(
                           color: Colors.white,

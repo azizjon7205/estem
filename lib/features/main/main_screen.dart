@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:estem/core/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_svg/svg.dart';
@@ -45,34 +46,39 @@ class _MainScreenState extends State<MainScreen> {
           const WalletRoute(),
           const ProfileRoute()
         ],
-        floatingActionButton: Container(
-          padding: const EdgeInsets.all(8),
-          height: 62,
-          width: 62,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  offset: const Offset(0, -3),
-                  blurRadius: 8,
-                  color: const Color(0xFF9DB2D6).withValues(alpha: 0.1),
-                )
-              ]),
+        floatingActionButton: GestureDetector(
+          onTap: () {
+            navController.push(CreateSurveyRoute());
+          },
           child: Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8),
+            height: 62,
+            width: 62,
             decoration: BoxDecoration(
-              color: AppColors.primary,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  offset: const Offset(0, 8),
-                  blurRadius: 20,
-                  color: const Color(0xFF4A43EC).withValues(alpha: 0.2),
-                )
-              ],
+                shape: BoxShape.circle,
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    offset: const Offset(0, -3),
+                    blurRadius: 8,
+                    color: const Color(0xFF9DB2D6).withValues(alpha: 0.1),
+                  )
+                ]),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    offset: const Offset(0, 8),
+                    blurRadius: 20,
+                    color: const Color(0xFF4A43EC).withValues(alpha: 0.2),
+                  )
+                ],
+              ),
+              child: SvgPicture.asset('assets/icons/ic_add.svg'),
             ),
-            child: SvgPicture.asset('assets/icons/ic_add.svg'),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -126,7 +132,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
                 activeIcon: SvgPicture.asset(
-                  'assets/icons/ic_menu_search.svg',
+                  'assets/icons/ic_forms.svg',
                   width: 30,
                   height: 30,
                   colorFilter: const ColorFilter.mode(

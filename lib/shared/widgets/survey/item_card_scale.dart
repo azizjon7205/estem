@@ -1,29 +1,55 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/shared/models/questions/question_scale.dart';
+import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '../../models/questions/question_short_answer.dart';
-import '../app_text_field.dart';
-import 'item_required.dart';
+import '../../models/questions/question_scale.dart';
 import '../sizes.dart';
+import 'item_required.dart';
 
-class ScaleItemCard extends StatelessWidget {
-  const ScaleItemCard(
-      {super.key,
-      required this.question,
-      required this.onScaleChanged,
-      this.total = 0,
-      this.current = 0,
-      this.scale});
+class ScaleItemCard extends StatefulWidget {
+  const ScaleItemCard({
+    super.key,
+    required this.question,
+    required this.onScaleChanged,
+    this.total = 0,
+    this.current = 0,
+    this.scale,
+  });
 
   final ScaleQuestion question;
   final int total;
   final int current;
   final int? scale;
   final Function(int) onScaleChanged;
+
+  @override
+  State<ScaleItemCard> createState() => _ScaleItemCardState();
+}
+
+class _ScaleItemCardState extends State<ScaleItemCard> {
+  Uint8List? _imageBytes;
+
+  @override
+  void initState() {
+    super.initState();
+    _decodeImage();
+  }
+
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +75,7 @@ class ScaleItemCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   'question.label'
-                      .tr(args: [current.toString(), total.toString()]),
+                      .tr(args: [widget.current.toString(), widget.total.toString()]),
                   style: GoogleFonts.inter(
                     color: AppColors.primary,
                     fontSize: 12.0,
@@ -58,24 +84,24 @@ class ScaleItemCard extends StatelessWidget {
                   ),
                 ),
               ),
-              if (question.isRequired) const ItemRequired()
+              if (widget.question.isRequired) const ItemRequired()
             ],
           ),
           const Height(6.0),
           Text(
-            question.question,
+            widget.question.question,
             style: GoogleFonts.inter(
                 color: AppColors.textStrong,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 height: 19.36 / 16),
           ),
-          if (question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -86,10 +112,10 @@ class ScaleItemCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              for (var i = question.leftScale; i <= question.rightScale; i++)
+              for (var i = widget.question.leftScale; i <= widget.question.rightScale; i++)
                 GestureDetector(
                   onTap: () {
-                    onScaleChanged(i);
+                    widget.onScaleChanged(i);
                   },
                   child: Column(
                     children: [
@@ -110,7 +136,7 @@ class ScaleItemCard extends StatelessWidget {
                           border: Border.all(
                             width: 5,
                             color:
-                                scale == i ? AppColors.primary : AppColors.gray,
+                                widget.scale == i ? AppColors.primary : AppColors.gray,
                           ),
                         ),
                       )
@@ -119,24 +145,29 @@ class ScaleItemCard extends StatelessWidget {
                 )
             ],
           ),
-          if (question.rightLabel != null || question.leftLabel != null) ...[
+          if (widget.question.rightLabel != null || widget.question.leftLabel != null) ...[
             const Height(8.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(question.leftLabel ?? '', style: GoogleFonts.inter(
-                  color: const Color(0xFF888693),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.0,
-                  height: 14.52 / 12
-                ),),
-                Text(question.rightLabel ?? '', style: GoogleFonts.inter(
-                  color: const Color(0xFF888693),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.0,
-                  height: 14.52 / 12
-                ),),
-
+                Text(
+                  widget.question.leftLabel ?? '',
+                  style: GoogleFonts.inter(
+                    color: const Color(0xFF888693),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.0,
+                    height: 14.52 / 12,
+                  ),
+                ),
+                Text(
+                  widget.question.rightLabel ?? '',
+                  style: GoogleFonts.inter(
+                    color: const Color(0xFF888693),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.0,
+                    height: 14.52 / 12,
+                  ),
+                ),
               ],
             ),
           ]

@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
-import '../../models/questions/question_rating.dart';
-import 'item_required.dart';
+import '../../models/questions/question_smile.dart';
 import '../sizes.dart';
+import 'item_required.dart';
 
-class SmileItemCard extends StatelessWidget {
+class SmileItemCard extends StatefulWidget {
   const SmileItemCard({
     super.key,
     required this.question,
@@ -18,11 +21,36 @@ class SmileItemCard extends StatelessWidget {
     this.current = 0,
   });
 
-  final StarRatingQuestion question;
+  final SmileQuestion question;
   final int? rating;
   final int total;
   final int current;
-  final Function(double) onSmileChanged;
+  final Function(int) onSmileChanged;
+
+  @override
+  State<SmileItemCard> createState() => _SmileItemCardState();
+}
+
+class _SmileItemCardState extends State<SmileItemCard> {
+  Uint8List? _imageBytes;
+
+  @override
+  void initState() {
+    super.initState();
+    _decodeImage();
+  }
+
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +78,10 @@ class SmileItemCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'question.label'
-                      .tr(args: [current.toString(), total.toString()]),
+                  'question.label'.tr(args: [
+                    widget.current.toString(),
+                    widget.total.toString()
+                  ]),
                   style: GoogleFonts.inter(
                     color: AppColors.primary,
                     fontSize: 12.0,
@@ -60,14 +90,14 @@ class SmileItemCard extends StatelessWidget {
                   ),
                 ),
               ),
-              if (question.isRequired) const ItemRequired()
+              if (widget.question.isRequired) const ItemRequired()
             ],
           ),
           const Height(6.0),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              question.question,
+              widget.question.question,
               style: GoogleFonts.inter(
                 color: AppColors.textStrong,
                 fontSize: 16,
@@ -76,12 +106,12 @@ class SmileItemCard extends StatelessWidget {
               ),
             ),
           ),
-          if (question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -93,24 +123,30 @@ class SmileItemCard extends StatelessWidget {
             spacing: 11.0,
             mainAxisSize: MainAxisSize.min,
             children: [
-              ...getSmileIcons().entries.map(
-                    (entry) {
-                      final image = entry.key == rating ? entry.value.replaceAll('_pale', '') : entry.value;
-                      return GestureDetector(
-                        child: SvgPicture.asset(image),
-                      );
-                    }
-                ),
+              ...getSmileIcons().entries.map((entry) {
+                final image = entry.key == widget.rating
+                    ? entry.value.replaceAll('_pale', '')
+                    : entry.value;
+                return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    widget.onSmileChanged(entry.key);
+                  },
+                  child: SvgPicture.asset(image),
+                );
+              }),
             ],
           ),
           const Height(4.0),
           Text(
-            rating != null ? question.ratingLabels[rating!] ?? '' : '',
+            widget.rating != null
+                ? widget.question.ratingLabels[widget.rating!] ?? ''
+                : '',
             style: GoogleFonts.inter(
-                color: _getColor(rating ?? 0),
-                fontSize: 12,
-                height: 14.52 / 12,
-                fontWeight: FontWeight.w500,
+              color: _getColor(widget.rating ?? 0),
+              fontSize: 12,
+              height: 14.52 / 12,
+              fontWeight: FontWeight.w500,
             ),
           )
         ],

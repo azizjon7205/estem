@@ -12,6 +12,7 @@ class VerificationRepositoryImpl extends VerificationRepository {
   Future<bool> confirmSms(String phone, String code) async {
     try {
       final response = await _api.confirmSmsCode(phone, code);
+      print("Verification Rep: >>>> token: ${response.token}");
       _sharedPrefs.setAuthToken(response.token);
       _sharedPrefs.setRefreshToken(response.refreshToken);
       _sharedPrefs.setPhoneNumber(phone);

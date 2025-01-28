@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '/core/styles/app_colors.dart';
@@ -29,12 +32,24 @@ class ShortAnswerItemCard extends StatefulWidget {
 }
 
 class _ShortAnswerItemCardState extends State<ShortAnswerItemCard> {
-  late TextEditingController textEditingController;
+  Uint8List? _imageBytes;
 
   @override
   void initState() {
-    textEditingController = TextEditingController(text: widget.value);
     super.initState();
+    _decodeImage();
+  }
+
+  void _decodeImage() {
+    if (widget.question.image != null) {
+      setState(() {
+        _imageBytes = base64Decode(widget.question.image!);
+      });
+    } else {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
   }
 
   @override
@@ -84,12 +99,12 @@ class _ShortAnswerItemCardState extends State<ShortAnswerItemCard> {
                 fontWeight: FontWeight.w500,
                 height: 19.36 / 16),
           ),
-          if (widget.question.image != null) ...[
+          if (_imageBytes != null) ...[
             const Height(6.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                widget.question.image!,
+              child: Image.memory(
+                _imageBytes!,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -98,7 +113,7 @@ class _ShortAnswerItemCardState extends State<ShortAnswerItemCard> {
           ],
           const Height(16.0),
           AppTextField(
-            controller: textEditingController,
+            value: widget.value,
             onChanged: widget.onAnswerChanged,
             hint: "question.answer".tr(),
           )
