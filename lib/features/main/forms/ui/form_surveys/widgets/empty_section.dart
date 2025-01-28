@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/core/styles/app_colors.dart';
-import 'package:estem/shared/widgets/sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '/core/styles/app_colors.dart';
+import '/shared/widgets/sizes.dart';
 
 class EmptySection extends StatelessWidget {
   const EmptySection({super.key});
@@ -27,20 +27,23 @@ class EmptySection extends StatelessWidget {
             child: Image.asset('assets/images/im_empty.png'),
           ),
           const Height(22.0),
-          Text('forms.empty_title'.tr(), style: GoogleFonts.inter(
-            color: AppColors.textStrong,
-            fontSize: 24.0,
-            fontWeight: FontWeight.w500,
-            height: 29.05 / 24
-          ),),
+          Text(
+            'forms.empty_title'.tr(),
+            style: GoogleFonts.inter(
+                color: AppColors.textStrong,
+                fontSize: 24.0,
+                fontWeight: FontWeight.w500,
+                height: 29.05 / 24),
+          ),
           const Height(12.0),
-          Text('forms.empty_message'.tr(), style: GoogleFonts.inter(
-            color: const Color(0xFF747688),
-            fontSize: 16.0,
-            fontWeight: FontWeight.w400,
-            height: 25 / 16
-          ),),
-
+          Text(
+            'forms.empty_message'.tr(),
+            style: GoogleFonts.inter(
+                color: const Color(0xFF747688),
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
+                height: 25 / 16),
+          ),
         ],
       ),
     );

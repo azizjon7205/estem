@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import '/core/router/router.dart';
 import 'package:flutter/material.dart';
 
 import '/core/styles/app_colors.dart';
