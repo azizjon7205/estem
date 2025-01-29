@@ -66,6 +66,11 @@ dependencies:
   currency_text_input_formatter: ^2.2.8
   fluttertoast: ^8.2.10
 
+  logging: any
+  bloc: any
+  fl_chart: ^0.70.2
+  pie_chart: ^5.4.0
+  flutter_hooks: ^0.18.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

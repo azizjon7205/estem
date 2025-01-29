@@ -29,7 +29,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
   void initState() {
     currentLanguage = prefs.getLang();
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, // Transparent status bar
         systemNavigationBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark, // Black icons
