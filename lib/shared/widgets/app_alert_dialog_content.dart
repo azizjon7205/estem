@@ -35,6 +35,7 @@ class AppAlertDialogContent extends StatelessWidget {
             const Height(30),
             Text(
               title,
+              textAlign: TextAlign.center,
               style: GoogleFonts.inter(
                 color: AppColors.textStrong,
                 fontSize: 24,

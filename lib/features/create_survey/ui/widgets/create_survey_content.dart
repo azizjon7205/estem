@@ -94,6 +94,7 @@ class CreateSurveyContent extends StatelessWidget {
                       content: DraftAlertContent(
                           onYesTap: () {},
                           onNoTap: () {
+                            controller.add(OnDeleteImage());
                             navController.maybePop();
                             navController.maybePop();
                           }),

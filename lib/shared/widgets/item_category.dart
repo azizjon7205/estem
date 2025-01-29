@@ -29,7 +29,7 @@ class CategoryItem extends StatelessWidget {
             Container(
               height: 64,
               width: 64,
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isSelected ? AppColors.primary : Colors.white,
@@ -44,11 +44,10 @@ class CategoryItem extends StatelessWidget {
                             blurRadius: 21.68,
                           )
                         ]
-                      : []),
+                      : [],
+              ),
               child: Image.network(
                 category.icon,
-                width: 32,
-                height: 32,
                 colorBlendMode: BlendMode.srcIn,
                 color: isSelected ? Colors.white : const Color(0XFF000000),
               ),

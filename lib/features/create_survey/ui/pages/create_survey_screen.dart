@@ -24,7 +24,7 @@ class CreateSurveyScreen extends StatelessWidget {
       )
         ..add(OnLoadCategories())
         ..add(OnLoadRegions())
-      ..add(OnLoadSurveyToEdit(id)),
+        ..add(OnLoadSurveyToEdit(id)),
       child: const CreateSurveyContent(),
     );
   }

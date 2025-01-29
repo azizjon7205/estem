@@ -228,10 +228,10 @@ class ApiService {
         case DioExceptionType.connectionError:
           throw Exception('Network Error: ${error.message}');
         default:
-          throw Exception('Unexpected Error: ${error.message}');
+          throw Exception('${error.message}');
       }
     } else {
-      throw Exception('Unexpected Error: $error');
+      throw Exception('$error');
     }
   }
 

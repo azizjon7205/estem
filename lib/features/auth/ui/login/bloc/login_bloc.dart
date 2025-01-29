@@ -1,3 +1,4 @@
+import 'package:estem/core/utils/log/app_logger.dart';
 import 'package:estem/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +19,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(this._loginUseCase) : super(const LoginState()) {
     on<PhoneNumberChanged>(_onPhoneNumberChanged);
     on<SubmitPhoneNumberEvent>(_onSubmitPhoneNumber);
+    on<OnReset>(_onReset);
+  }
+
+  void _onReset(OnReset event, Emitter<LoginState> emit) {
+    emit(state.copyWith(isLoading: false, isSuccess: false, errorMessage: ''));
   }
 
   void _onSubmitPhoneNumber(
@@ -27,6 +33,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await _loginUseCase.call(phoneNumberEditingController.text);
       emit(state.copyWith(isLoading: false, isSuccess: true));
     } catch (e) {
+      logger.info("OnSubmitPhoneError => $e");
       emit(state.copyWith(
           isLoading: false, isSuccess: false, errorMessage: e.toString()));
     }

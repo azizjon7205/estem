@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:estem/core/router/router.dart';
 import 'package:estem/core/router/router.gr.dart';
+import 'package:estem/core/utils/messages/show_error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,14 +26,10 @@ class OtpActions extends StatelessWidget {
       listener: (context, state) {
         print('state is : ${state.isSuccess} error: ${state.errorMessage}');
         if (state.isSuccess == false && state.errorMessage.isNotEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage)),
-          );
+          showErrorMessage(state.errorMessage);
         }
         if (state.isSuccess == true) {
           navController.replaceAll([const MainRoute()]);
-
-          // navController.push(const HomeRoute());
         }
       },
       builder: (context, state) => Column(

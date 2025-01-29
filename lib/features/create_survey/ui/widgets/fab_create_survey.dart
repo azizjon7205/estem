@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:estem/core/utils/messages/show_error_message.dart';
+import 'package:estem/shared/widgets/app_alert_dialog_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -46,7 +48,6 @@ class FabCreateSurvey extends StatelessWidget {
     final watcher = context.watch<CreateBloc>();
     return GestureDetector(
       onTap: () {
-        print("FAB create Survey: ${watcher.state.survey}");
         if (watcher.state.survey != null) {
           showModalBottomSheet(
             shape: const RoundedRectangleBorder(
@@ -75,7 +76,8 @@ class FabCreateSurvey extends StatelessWidget {
                       question = EmailQuestion(question: '', isRequired: false);
                       break;
                     case QuestionType.number:
-                      question = NumberQuestion(question: '', isRequired: false);
+                      question =
+                          NumberQuestion(question: '', isRequired: false);
                       break;
                     case QuestionType.select:
                       question = SelectQuestion(
@@ -188,16 +190,16 @@ class FabCreateSurvey extends StatelessWidget {
                                   controller.add(OnTempQuestionChanged(
                                       questionEntity.copyWith(
                                           additionalLabel:
-                                          'question.add_option'.tr())));
+                                              'question.add_option'.tr())));
                                   return FormSelect(
                                     question: question as SelectQuestion,
                                     onQuestionChanged: (query) {
                                       final label = (query as SelectQuestion)
-                                          .options
-                                          .isNotEmpty
+                                              .options
+                                              .isNotEmpty
                                           ? 'question.show_options'.tr(args: [
-                                        query.options.length.toString()
-                                      ])
+                                              query.options.length.toString()
+                                            ])
                                           : 'question.add_option'.tr();
                                       controller.add(OnTempQuestionChanged(
                                           questionEntity.copyWith(
@@ -214,16 +216,16 @@ class FabCreateSurvey extends StatelessWidget {
                                   controller.add(OnTempQuestionChanged(
                                       questionEntity.copyWith(
                                           additionalLabel:
-                                          'question.add_option'.tr())));
+                                              'question.add_option'.tr())));
                                   return FormCheckbox(
                                     question: question as CheckBoxQuestion,
                                     onQuestionChanged: (query) {
                                       final label = (query as CheckBoxQuestion)
-                                          .options
-                                          .isNotEmpty
+                                              .options
+                                              .isNotEmpty
                                           ? 'question.show_options'.tr(args: [
-                                        query.options.length.toString()
-                                      ])
+                                              query.options.length.toString()
+                                            ])
                                           : 'question.add_option'.tr();
                                       controller.add(OnTempQuestionChanged(
                                           questionEntity.copyWith(
@@ -240,16 +242,16 @@ class FabCreateSurvey extends StatelessWidget {
                                   controller.add(OnTempQuestionChanged(
                                       questionEntity.copyWith(
                                           additionalLabel:
-                                          'question.add_option'.tr())));
+                                              'question.add_option'.tr())));
                                   return FormDropdown(
                                     question: question as DropdownQuestion,
                                     onQuestionChanged: (query) {
                                       final label = (query as DropdownQuestion)
-                                          .options
-                                          .isNotEmpty
+                                              .options
+                                              .isNotEmpty
                                           ? 'question.show_options'.tr(args: [
-                                        query.options.length.toString()
-                                      ])
+                                              query.options.length.toString()
+                                            ])
                                           : 'question.add_option'.tr();
                                       controller.add(OnTempQuestionChanged(
                                           questionEntity.copyWith(
@@ -321,8 +323,9 @@ class FabCreateSurvey extends StatelessWidget {
                                 {
                                   controller.add(OnTempQuestionChanged(
                                       questionEntity.copyWith(
-                                          additionalLabel: 'question.show_options'
-                                              .tr(args: ['5']))));
+                                          additionalLabel:
+                                              'question.show_options'
+                                                  .tr(args: ['5']))));
                                   return FormStarRating(
                                     question: question as StarRatingQuestion,
                                     onQuestionChanged: (query) {
@@ -339,8 +342,9 @@ class FabCreateSurvey extends StatelessWidget {
                                 {
                                   controller.add(OnTempQuestionChanged(
                                       questionEntity.copyWith(
-                                          additionalLabel: 'question.show_options'
-                                              .tr(args: ['5']))));
+                                          additionalLabel:
+                                              'question.show_options'
+                                                  .tr(args: ['5']))));
                                   return FormSmile(
                                     question: question as SmileQuestion,
                                     onQuestionChanged: (query) {
@@ -366,52 +370,58 @@ class FabCreateSurvey extends StatelessWidget {
                       if (questionL is SelectQuestion) {
                         label = questionL.options.isNotEmpty
                             ? 'question.show_options'
-                            .tr(args: [questionL.options.length.toString()])
+                                .tr(args: [questionL.options.length.toString()])
                             : 'question.add_option'.tr();
-                        error = questionL.options.isEmpty ? 'question.add_option'.tr() : null;
+                        error = questionL.options.isEmpty
+                            ? 'question.add_option'.tr()
+                            : null;
                         questionL.options = questionL.options
                             .map(
                               (element) => element.option.isNotEmpty
-                              ? element
-                              : element.copyWith(
-                            option: 'question.option_hint'
-                                .tr(args: ['${counter++}']),
-                          ),
-                        )
+                                  ? element
+                                  : element.copyWith(
+                                      option: 'question.option_hint'
+                                          .tr(args: ['${counter++}']),
+                                    ),
+                            )
                             .toList();
                       }
                       if (questionL is CheckBoxQuestion) {
                         label = questionL.options.isNotEmpty
                             ? 'question.show_options'
-                            .tr(args: [questionL.options.length.toString()])
+                                .tr(args: [questionL.options.length.toString()])
                             : 'question.add_option'.tr();
-                        error = questionL.options.isEmpty ? 'question.add_option'.tr() : null;
+                        error = questionL.options.isEmpty
+                            ? 'question.add_option'.tr()
+                            : null;
                         questionL.options = questionL.options
                             .map(
                               (element) => element.option.isNotEmpty
-                              ? element
-                              : element.copyWith(
-                            option: 'question.option_hint'
-                                .tr(args: ['${counter++}']),
-                          ),
-                        )
+                                  ? element
+                                  : element.copyWith(
+                                      option: 'question.option_hint'
+                                          .tr(args: ['${counter++}']),
+                                    ),
+                            )
                             .toList();
                       }
                       if (questionL is DropdownQuestion) {
                         label = questionL.options.isNotEmpty
                             ? 'question.show_options'
-                            .tr(args: [questionL.options.length.toString()])
+                                .tr(args: [questionL.options.length.toString()])
                             : 'question.add_option'.tr();
-                        error = questionL.options.isEmpty ? 'question.add_option'.tr() : null;
+                        error = questionL.options.isEmpty
+                            ? 'question.add_option'.tr()
+                            : null;
                         questionL.options = questionL.options
                             .map(
                               (element) => element.option.isNotEmpty
-                              ? element
-                              : element.copyWith(
-                            option: 'question.option_hint'
-                                .tr(args: ['${counter++}']),
-                          ),
-                        )
+                                  ? element
+                                  : element.copyWith(
+                                      option: 'question.option_hint'
+                                          .tr(args: ['${counter++}']),
+                                    ),
+                            )
                             .toList();
                       }
                       if (questionL is ScaleQuestion) {
@@ -422,29 +432,31 @@ class FabCreateSurvey extends StatelessWidget {
                       if (questionL is StarRatingQuestion) {
                         label = 'question.show_options'.tr(args: ['5']);
                         questionL.ratingLabels = questionL.ratingLabels.map(
-                              (key, value) => MapEntry(
+                          (key, value) => MapEntry(
                               key,
                               value.isNotEmpty
                                   ? value
                                   : 'question.strings.${getSmileStrings()[key]}'
-                                  .tr()),
+                                      .tr()),
                         );
                       }
                       if (questionL is SmileQuestion) {
                         label = 'question.show_options'.tr(args: ['5']);
                         questionL.ratingLabels = questionL.ratingLabels.map(
-                              (key, value) => MapEntry(
+                          (key, value) => MapEntry(
                               key,
                               value.isNotEmpty
                                   ? value
                                   : 'question.strings.${getSmileStrings()[key]}'
-                                  .tr()),
+                                      .tr()),
                         );
                       }
 
                       controller.add(OnAddQuestion(watcher.state.tempQuestion!
                           .copyWith(
-                          additionalLabel: label, question: questionL, error: error)));
+                              additionalLabel: label,
+                              question: questionL,
+                              error: error)));
                     }
                   });
                 },
@@ -452,9 +464,20 @@ class FabCreateSurvey extends StatelessWidget {
             ),
           );
         } else {
-          // show error snack bar to force to fill the all fields
+          showAdaptiveDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: AppAlertDialogContent(
+                onActionDone: () {
+                  navController.maybePop();
+                },
+                image: 'assets/images/im_warning.png',
+                title: 'create.incomplete_message'.tr(),
+                actionTitle: 'base.actions.go_back'.tr().toUpperCase(),
+              ),
+            ),
+          );
         }
-
       },
       child: Container(
         padding: const EdgeInsets.all(8),

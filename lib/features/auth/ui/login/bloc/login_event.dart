@@ -10,3 +10,7 @@ class PhoneNumberChanged extends LoginEvent {
 
   PhoneNumberChanged(this.phone);
 }
+
+class OnReset extends LoginEvent {
+
+}

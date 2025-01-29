@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:estem/core/utils/messages/show_error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,19 +21,12 @@ class LoginActionsField extends StatelessWidget {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.isSuccess == true) {
-          navController.push( VerificationRoute(phoneNumber: state.phone));
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(content: Text('Login Successful!')),
-          // );
-        } else if (state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage!)),
-          );
+          context.read<LoginBloc>().add(OnReset());
+          navController.push(VerificationRoute(phoneNumber: state.phone));
+        } else if (state.errorMessage?.isNotEmpty == true) {
+          context.read<LoginBloc>().add(OnReset());
+          showErrorMessage(state.errorMessage!);
         }
-
-        // if (state.isSuccess == false) {
-        //   navController.push( VerificationRoute(phoneNumber: state.phone));
-        // }
       },
       builder: (context, state) => Column(
         children: [
@@ -62,11 +56,12 @@ class LoginActionsField extends StatelessWidget {
                       context.read<LoginBloc>().phoneNumberEditingController,
                   keyboardType: TextInputType.phone,
                   onChanged: (value) {
-                    context.read<LoginBloc>().add(PhoneNumberChanged(context
-                        .read<LoginBloc>()
-                        .maskFormatter
-                        .getMaskedText()),
-                    );
+                    context.read<LoginBloc>().add(
+                          PhoneNumberChanged(context
+                              .read<LoginBloc>()
+                              .maskFormatter
+                              .getMaskedText()),
+                        );
                   },
                   inputFormatters: [context.read<LoginBloc>().maskFormatter],
                   hint: '99 111 22 33',
