@@ -30,7 +30,9 @@
       "view": "View",
       "submit": "Submit",
       "duplicate": "Duplicate",
-      "browse_file": "Browse file"
+      "browse_file": "Browse file",
+      "reset": "Reset",
+      "apply": "Apply"
     }
   },
   "language": {
@@ -167,5 +169,7 @@
     "congratulations": "Congratulations",
     "top_up_message": "Money has been transferred",
     "card_message": "Card has been added"
-  }
+  },
+  "filter": "Filter",
+  "surveys": "Surveys"
 }

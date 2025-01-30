@@ -83,4 +83,10 @@ class Helper {
         .format(amount)
         .replaceAll(',', ' ');
   }
+
+  static String obscureDigits(String text) {
+    return text.replaceAll(RegExp(r'\d'), '*'); // Generates a string of '*' equal to text length
+  }
+
+
 }

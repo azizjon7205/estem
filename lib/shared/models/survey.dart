@@ -17,7 +17,7 @@ class Survey {
     required this.date,
   });
 
-  factory Survey.formJson(Map<String, dynamic> json) {
+  factory Survey.fromJson(Map<String, dynamic> json) {
     return Survey(
       id: json['id'],
       image: json['photo'] ?? '',

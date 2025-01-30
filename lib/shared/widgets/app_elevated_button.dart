@@ -5,15 +5,16 @@ import '/core/styles/app_colors.dart';
 import '/shared/widgets/sizes.dart';
 
 class AppElevatedButton extends StatelessWidget {
-  const AppElevatedButton(
-      {super.key,
-      this.onTap,
-      this.margin,
-      required this.label,
-      this.enabled = true,
-        this.height = 58.0,
-      this.showLoader = false,
-      this.hasSuffixNext = true});
+  const AppElevatedButton({
+    super.key,
+    this.onTap,
+    this.margin,
+    required this.label,
+    this.enabled = true,
+    this.height = 58.0,
+    this.showLoader = false,
+    this.hasSuffixNext = true,
+  });
 
   final GestureTapCallback? onTap;
   final EdgeInsetsGeometry? margin;

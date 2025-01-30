@@ -35,10 +35,10 @@ class AppRouter extends RootStackRouter {
           AutoRoute(page: StartSurveyRoute.page, initial: false),
           AutoRoute(page: SurveyRoute.page, initial: false),
         ]),
-      ];
         AutoRoute(page: EditProfileRoute.page, initial: false),
-        AutoRoute(page: EditInterestsBottomSheet.page, initial: false)
-  ];
+        AutoRoute(page: SurveysRoute.page),
+        // AutoRoute(page: EditInterestsBottomSheet.page, initial: false)
+      ];
 }
 
 class OnboardingGuard extends AutoRouteGuard {

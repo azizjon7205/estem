@@ -13,7 +13,7 @@ class FormsApiImpl extends FormsApi {
       '/api/app/function/run',
       data: {"method_id": 2, "state": state},
       tFromJson: (json) => List<Survey>.from(
-        json.map((e) => Survey.formJson(e)),
+        json.map((e) => Survey.fromJson(e)),
       ),
     );
   }
