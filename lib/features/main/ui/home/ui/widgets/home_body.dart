@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:estem/features/main/ui/home/ui/bloc/home_event.dart';
+import 'package:estem/features/main/ui/home/ui/widgets/content_surveys.dart';
+import 'package:showcaseview/showcaseview.dart';
 import '../../../../bloc/main_bloc.dart';
 import '../../../surveys/domain/entities/filter_params.dart';
 import '/core/helper/helper.dart';
@@ -23,6 +25,9 @@ class HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<HomeBloc>();
     final mainCT = context.watch<MainBloc>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context).startShowCase([context.read<MainBloc>().firstItemKey]);
+    });
     return Column(
       children: [
         Stack(
@@ -88,141 +93,8 @@ class HomeBody extends StatelessWidget {
           ],
         ),
         const Height(12),
-        Expanded(
-          child: ListView(
-            children: [
-              if (controller.state.surveys.recentSurveys.isNotEmpty) ...[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'home.recent'.tr(),
-                        style: GoogleFonts.inter(
-                            color: AppColors.textStrong,
-                            fontSize: 18,
-                            height: 34 / 18,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          navController.push(
-                            SurveysRoute(params: FilterParams(isRecent: true)),
-                          );
-                        },
-                        child: Row(
-                          spacing: 5,
-                          children: [
-                            Text(
-                              'home.see_all'.tr(),
-                              style: GoogleFonts.inter(
-                                color: AppColors.textSub,
-                                fontSize: 14,
-                                height: 23 / 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            SvgPicture.asset('assets/icons/ic_arrow_right.svg')
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                ListView.separated(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, i) => SurveyItem(
-                    onTap: () {
-                      navController.push(StartSurveyRoute(
-                          survey: controller.state.surveys.recentSurveys[i],
-                          onStartSurvey: () {
-                            navController.push(SurveyRoute(
-                              id: controller.state.surveys.recentSurveys[i].id,
-                              title: controller
-                                  .state.surveys.recentSurveys[i].title,
-                            ));
-                          }));
-                    },
-                    survey: controller.state.surveys.recentSurveys[i],
-                    isSavedBookmark: false,
-                    onSurveySavedBookmark: (value) {},
-                  ),
-                  separatorBuilder: (context, i) => const Height(8.0),
-                  itemCount: controller.state.surveys.recentSurveys.length,
-                ),
-              ],
-              if (controller.state.surveys.recommendedSurveys.isNotEmpty) ...[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'home.for_you'.tr(),
-                        style: GoogleFonts.inter(
-                            color: AppColors.textStrong,
-                            fontSize: 18,
-                            height: 34 / 18,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          navController.push(
-                            SurveysRoute(params: FilterParams(isForYou: true)),
-                          );
-                        },
-                        child: Row(
-                          spacing: 5,
-                          children: [
-                            Text(
-                              'home.see_all'.tr(),
-                              style: GoogleFonts.inter(
-                                color: AppColors.textSub,
-                                fontSize: 14,
-                                height: 23 / 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            SvgPicture.asset('assets/icons/ic_arrow_right.svg')
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                ListView.separated(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, i) => SurveyItem(
-                    onTap: () {
-                      navController.push(StartSurveyRoute(
-                          survey:
-                              controller.state.surveys.recommendedSurveys[i],
-                          onStartSurvey: () {
-                            navController.push(SurveyRoute(
-                              id: controller
-                                  .state.surveys.recommendedSurveys[i].id,
-                              title: controller
-                                  .state.surveys.recommendedSurveys[i].title,
-                            ));
-                          }));
-                    },
-                    survey: controller.state.surveys.recommendedSurveys[i],
-                    isSavedBookmark: false,
-                    onSurveySavedBookmark: (value) {},
-                  ),
-                  separatorBuilder: (context, i) => const Height(8.0),
-                  itemCount: controller.state.surveys.recommendedSurveys.length,
-                ),
-              ]
-            ],
-          ),
+        const Expanded(
+          child: ContentSurveys(),
         ),
       ],
     );

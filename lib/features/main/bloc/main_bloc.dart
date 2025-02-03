@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 
 import '../domain/repositories/main_repository.dart';
 import 'main_event.dart';
@@ -6,6 +7,8 @@ import 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   final MainRepository _repository;
+
+  final GlobalKey firstItemKey = GlobalKey();
 
   MainBloc({required MainRepository repository})
       : _repository = repository,

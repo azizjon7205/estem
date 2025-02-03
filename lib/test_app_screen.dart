@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:estem/features/main/ui/wallet/ui/add_card/widgets/add_card_body.dart';
 import 'package:flutter/material.dart';
 
 import 'features/wallet/ui/dialogs/card_added_success_content.dart';
@@ -11,7 +12,7 @@ class TestAppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: CardAddedSuccessContent(onGoBackTap: () {  },),
+        child: AddCardBody(),
       ),
     );
   }

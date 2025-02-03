@@ -13,7 +13,9 @@ import '../../../../bloc/main_bloc.dart';
 import 'drawer_menu_item.dart';
 
 class DrawerLayout extends StatelessWidget {
-  const DrawerLayout({super.key});
+  const DrawerLayout({super.key, required this.onCloseDrawer});
+
+  final VoidCallback onCloseDrawer;
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +54,17 @@ class DrawerLayout extends StatelessWidget {
                     DrawerMenuItem(
                       leadingPath: 'assets/icons/ic_profile_2.svg',
                       label: 'main.my_profile'.tr(),
-                      onTap: () {},
+                      onTap: () {
+                        onCloseDrawer();
+                        navController.push(const ProfileRoute());
+                      },
                     ),
                     DrawerMenuItem(
                       leadingPath: 'assets/icons/ic_statistics.svg',
                       label: 'main.statistics'.tr(),
-                      onTap: () {},
+                      onTap: () {
+                        navController.push(const StatisticsRoute());
+                      },
                     ),
                     DrawerMenuItem(
                       leadingPath: 'assets/icons/ic_bookmark.svg',

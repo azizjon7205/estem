@@ -37,6 +37,9 @@ class AppRouter extends RootStackRouter {
         ]),
         AutoRoute(page: EditProfileRoute.page, initial: false),
         AutoRoute(page: SurveysRoute.page),
+        AutoRoute(page: TransferRoute.page),
+        AutoRoute(page: AddCardRoute.page),
+        AutoRoute(page: StatisticsRoute.page),
         // AutoRoute(page: EditInterestsBottomSheet.page, initial: false)
       ];
 }

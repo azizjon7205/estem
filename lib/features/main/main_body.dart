@@ -33,7 +33,9 @@ class _MainBodyState extends State<MainBody> {
         childDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(40),
         ),
-        drawer: const DrawerLayout(),
+        drawer: DrawerLayout(
+          onCloseDrawer: _advancedDrawerController.hideDrawer,
+        ),
         child: AutoTabsScaffold(
           routes: [
             HomeRoute(

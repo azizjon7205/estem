@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:estem/features/statistics/bloc/statistics_bloc.dart';
 import 'package:estem/features/statistics/bloc/statistics_event.dart';
 import 'package:estem/features/statistics/bloc/statistics_state.dart';
@@ -6,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class StatisticsPage extends StatelessWidget{
-  const StatisticsPage({super.key});
+@RoutePage()
+class StatisticsScreen extends StatelessWidget{
+  const StatisticsScreen({super.key});
   
   @override
   Widget build(BuildContext context) {

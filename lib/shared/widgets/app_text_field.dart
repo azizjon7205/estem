@@ -1,6 +1,7 @@
 import 'package:estem/core/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AppTextField extends StatelessWidget {
   const AppTextField(
@@ -17,7 +18,8 @@ class AppTextField extends StatelessWidget {
       this.isReadOnly = false,
       this.controller,
       this.textInputAction,
-      this.focusNode});
+        this.suffix,
+      this.focusNode, this.textAlign = TextAlign.start});
 
   final EdgeInsetsGeometry? contentPadding;
   final TextInputType? keyboardType;
@@ -31,6 +33,8 @@ class AppTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
   final FocusNode? focusNode;
+  final Widget? suffix;
+  final TextAlign textAlign;
   final TextInputAction? textInputAction;
 
   @override
@@ -51,6 +55,7 @@ class AppTextField extends StatelessWidget {
       onChanged: onChanged,
       keyboardType: keyboardType,
       maxLines: maxLines,
+      textAlign: textAlign,
       inputFormatters: inputFormatters,
       decoration: InputDecoration(
         hintText: hint,
@@ -58,6 +63,8 @@ class AppTextField extends StatelessWidget {
         errorText: errorText,
         contentPadding: contentPadding,
         isDense: contentPadding != null,
+        suffixIconConstraints: const BoxConstraints(maxHeight: 32),
+        suffixIcon: suffix,
       ),
     );
   }

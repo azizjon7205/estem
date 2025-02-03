@@ -18,7 +18,7 @@
       "confirm": "Tasdiqlash",
       "delete": "O'chirish",
       "upload": "Yuklash",
-      "continue": "Davom etish",
+      "continue": "Continue",
       "cancel": "Bekor qilish",
       "back": "Ortga",
       "sort": "Saralash",
@@ -168,7 +168,26 @@
   "wallet": {
     "congratulations": "Congratulations",
     "top_up_message": "Money has been transferred",
-    "card_message": "Card has been added"
+    "card_message": "Card has been added",
+    "available_balance": "Available Balance",
+    "top_up": "Top up balance",
+    "withdraw": "Withdraw",
+    "weekly": "Weekly",
+    "history": "History"
+  },
+  "history": {
+    "income": "Income",
+    "outcome": "Outcome"
+  },
+  "transfer": {
+    "transfer_to_card": "Transfer to card",
+    "top_up_balance": "Top up your balance",
+    "my_card": "My card",
+    "my_balance": "My balance",
+    "amount_hint": "Enter sum",
+    "minimal_prompt": "Minimal sum {}",
+    "balance": "Balance",
+    "add_card": "Add card"
   },
   "filter": "Filter",
   "surveys": "Surveys"
