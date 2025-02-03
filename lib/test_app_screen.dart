@@ -2,8 +2,6 @@ import 'package:auto_route/annotations.dart';
 import 'package:estem/features/main/ui/wallet/ui/add_card/widgets/add_card_body.dart';
 import 'package:flutter/material.dart';
 
-import 'features/wallet/ui/dialogs/card_added_success_content.dart';
-
 @RoutePage()
 class TestAppScreen extends StatelessWidget {
   const TestAppScreen({super.key});

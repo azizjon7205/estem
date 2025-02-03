@@ -1,22 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:estem/features/main/ui/home/ui/bloc/home_event.dart';
-import 'package:estem/features/main/ui/home/ui/widgets/content_surveys.dart';
-import 'package:showcaseview/showcaseview.dart';
-import '../../../../bloc/main_bloc.dart';
-import '../../../surveys/domain/entities/filter_params.dart';
-import '/core/helper/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:showcaseview/showcaseview.dart';
 
-import '/core/router/router.dart';
-import '/core/router/router.gr.dart';
-import '../bloc/home_bloc.dart';
+import '../bloc/home_event.dart';
+import '/core/helper/helper.dart';
 import '/core/styles/app_colors.dart';
 import '/shared/widgets/sizes.dart';
-import '/shared/widgets/survey_item.dart';
+import '../../../../bloc/main_bloc.dart';
+import '../bloc/home_bloc.dart';
 import 'card_category_home.dart';
+import 'content_surveys.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});

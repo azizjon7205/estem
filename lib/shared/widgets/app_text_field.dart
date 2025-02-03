@@ -1,7 +1,7 @@
-import 'package:estem/core/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import '/core/styles/app_colors.dart';
 
 class AppTextField extends StatelessWidget {
   const AppTextField(
@@ -18,8 +18,9 @@ class AppTextField extends StatelessWidget {
       this.isReadOnly = false,
       this.controller,
       this.textInputAction,
-        this.suffix,
-      this.focusNode, this.textAlign = TextAlign.start});
+      this.suffix,
+      this.focusNode,
+      this.textAlign = TextAlign.start});
 
   final EdgeInsetsGeometry? contentPadding;
   final TextInputType? keyboardType;
